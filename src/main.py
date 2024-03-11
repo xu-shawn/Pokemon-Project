@@ -1,5 +1,6 @@
 import os
 import time
+from pokemon import *
 def clearScrn():
     '''
     clearScrn()
@@ -63,6 +64,12 @@ def choose_move(moves):
         move = input("Your move: ")
     
     return moves[move]
+starters = {"Bulbasaur":Pokemon("Bulbasaur", ["Grass"], 100, ["Scratch", "Tackle", "Vine Whip"]
+                                , 20, 20, 25, 0, "A Bulbasaur. What else is there to say?", []),
+            "Charmander":Pokemon("Charmander", ["Fire"], 80, ["Scratch", "Tackle", "Ember"]
+                                , 25, 15, 20, 0, "A Charmander. What else is there to say?", []),
+            "Squirtle":Pokemon("Bulbasaur", ["Water"], 120, ["Scratch", "Tackle", "Bubble"]
+                                , 15, 25, 20, 0, "A Squirtle. What else is there to say?", [])}
 
 def main() -> None:
     if __name__ == "__main__":
