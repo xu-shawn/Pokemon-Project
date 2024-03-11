@@ -1,6 +1,9 @@
 from pokemon import *
+
 statusFire = StatusEffect()
-def simpleDmgMove(self, other, power=0,effective=[],noteffective=[]):
+
+
+def simpleDmgMove(self, other, power=0, effective=[], noteffective=[]):
     if other.type in effective:
         other.Damage(power * 2)
     elif other.type in noteffective:
@@ -8,295 +11,169 @@ def simpleDmgMove(self, other, power=0,effective=[],noteffective=[]):
     else:
         other.Damage(power)
     # Add to UI
+
+
 def tickFire(self):
     self.Damage(10)
     # Add to UI
-def inflictFireMove(self, other, power=0, effective=[],noteffective=[]):
+
+
+def inflictFireMove(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
     other.addStatus(statusFire.deepcopy())
+
+
 MOVES_DICTIONARY = {
-    "Scratch": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
-    "Tackle": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
-    "Pound": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
-    "Rage": lambda me,other : simpleDmgMove(me,other,20,[],["Rock", "Steel"]),
-    "Fury Attack": lambda me,other : simpleDmgMove(me,other,15,[],["Rock", "Steel"]), # ... and so on
-    "Ember": {
-        "name": "Ember",
-        "power": 40,
-        "type": "Fire",
-        "super effective against": ["Grass", "Ice", "Bug", "Steel"],
-        "not very effective against": ["Fire", "Water", "Rock", "Dragon"],
-    },
-    "Fire Spin": {
-        "name": "Fire Spin",
-        "power": 35,
-        "type": "Fire",
-        "super effective against": ["Grass", "Ice", "Bug", "Steel"],
-        "not very effective against": ["Fire", "Water", "Rock", "Dragon"],
-    },
-    "Bubble": {
-        "name": "Bubble",
-        "power": 40,
-        "type": "Water",
-        "super effective against": ["Fire", "Ground", "Rock"],
-        "not very effective against": ["Water", "Grass", "Dragon"],
-    },
-    "Aqua Jet": {
-        "name": "Aqua Jet",
-        "power": 40,
-        "type": "Water",
-        "super effective against": ["Fire", "Ground", "Rock"],
-        "not very effective against": ["Water", "Grass", "Dragon"],
-    },
-    "Thunder Shock": {
-        "name": "Thunder Shock",
-        "power": 40,
-        "type": "Electric",
-        "super effective against": ["Water", "Flying"],
-        "not very effective against": ["Electric", "Grass", "Dragon"],
-    },
-    "Thunderbolt": {
-        "name": "Thunderbolt",
-        "power": 90,
-        "type": "Electric",
-        "super effective against": ["Water", "Flying"],
-        "not very effective against": ["Electric", "Grass", "Dragon"],
-    },
-    "Vine Whip": {
-        "name": "Vine Whip",
-        "power": 45,
-        "type": "Grass",
-        "super effective against": ["Water", "Ground", "Rock"],
-        "not very effective against": [
-            "Fire",
-            "Grass",
-            "Poison",
-            "Flying",
-            "Bug",
-            "Dragon",
-            "Steel",
-        ],
-    },
-    "Magical Leaf": {
-        "name": "Magical Leaf",
-        "power": 60,
-        "type": "Grass",
-        "super effective against": ["Water", "Ground", "Rock"],
-        "not very effective against": [
-            "Fire",
-            "Grass",
-            "Poison",
-            "Flying",
-            "Bug",
-            "Dragon",
-            "Steel",
-        ],
-    },
-    "Ice Shard": {
-        "name": "Ice Shard",
-        "power": 40,
-        "type": "Ice",
-        "super effective against": ["Grass", "Ground", "Flying", "Dragon"],
-        "not very effective against": ["Fire", "Water", "Ice", "Steel"],
-    },
-    "Double Kick": {
-        "name": "Double Kick",
-        "power": 30,
-        "type": "Fighting",
-        "super effective against": ["Normal", "Ice", "Rock", "Dark", "Steel"],
-        "not very effective against": ["Poison", "Flying", "Psychic", "Bug", "Fairy"],
-    },
-    "Earthquake": {
-        "name": "Earthquake",
-        "power": 100,
-        "type": "Ground",
-        "super effective against": ["Fire", "Electric", "Poison", "Rock", "Steel"],
-        "not very effective against": ["Grass", "Bug"],
-    },
-    "Wing Attack": {
-        "name": "Wing Attack",
-        "power": 60,
-        "type": "Flying",
-        "super effective against": ["Grass", "Fighting", "Bug"],
-        "not very effective against": ["Electric", "Rock", "Steel"],
-    },
-    "Peck": {
-        "name": "Peck",
-        "power": 35,
-        "type": "Flying",
-        "super effective against": ["Grass", "Fighting", "Bug"],
-        "not very effective against": ["Electric", "Rock", "Steel"],
-    },
-    "Confusion": {
-        "name": "Confusion",
-        "power": 50,
-        "type": "Psychic",
-        "super effective against": ["Fighting", "Poison"],
-        "not very effective against": ["Psychic", "Steel"],
-    },
-    "Twineedle": {
-        "name": "Twineedle",
-        "power": 25,
-        "type": "Bug",
-        "super effective against": ["Grass", "Psychic", "Dark"],
-        "not very effective against": [
-            "Fire",
-            "Fighting",
-            "Poison",
-            "Flying",
-            "Ghost",
-            "Steel",
-            "Fairy",
-        ],
-    },
-    "Rock Throw": {
-        "name": "Rock Throw",
-        "power": 50,
-        "type": "Rock",
-        "super effective against": ["Fire", "Ice", "Flying", "Bug"],
-        "not very effective against": ["Fighting", "Ground", "Steel"],
-    },
-    "Rock Slide": {
-        "name": "Rock Slide",
-        "power": 75,
-        "type": "Rock",
-        "super effective against": ["Fire", "Ice", "Flying", "Bug"],
-        "not very effective against": ["Fighting", "Ground", "Steel"],
-    },
-    "Lick": {
-        "name": "Lick",
-        "power": 30,
-        "type": "Ghost",
-        "super effective against": ["Psychic", "Ghost"],
-        "not very effective against": ["Dark"],
-    },
-    "Outrage": {
-        "name": "Outrage",
-        "power": 120,
-        "type": "Dragon",
-        "super effective against": ["Dragon"],
-        "not very effective against": ["Steel"],
-    },
-    "Crunch": {
-        "name": "Crunch",
-        "power": 80,
-        "type": "Dark",
-        "super effective against": ["Psychic", "Ghost"],
-        "not very effective against": ["Fighting", "Dark", "Fairy"],
-    },
-    "Bite": {
-        "name": "Bite",
-        "power": 60,
-        "type": "Dark",
-        "super effective against": ["Psychic", "Ghost"],
-        "not very effective against": ["Fighting", "Dark", "Fairy"],
-    },
-    "Flash Cannon": {
-        "name": "Flash Cannon",
-        "power": 80,
-        "type": "Steel",
-        "super effective against": ["Ice", "Rock", "Fairy"],
-        "not very effective against": ["Fire", "Water", "Electric", "Steel"],
-    },
-    "Smog": {
-        "name": "Smog",
-        "power": 30,
-        "type": "Poison",
-        "super effective against": ["Grass", "Fairy"],
-        "not very effective against": ["Poison", "Ground", "Rock", "Ghost"],
-    },
-    "Dream Eater": {
-        "name": "Dream Eater",
-        "power": 100,
-        "type": "Psychic",
-        "super effective against": ["Fighting", "Poison"],
-        "not very effective against": ["Psychic", "Steel"],
-    },
-    "Body Slam": {
-        "name": "Body Slam",
-        "power": 85,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
-    "Double Slap": {
-        "name": "Double Slap",
-        "power": 15,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
-    "Razor Leaf": {
-        "name": "Razor Leaf",
-        "power": 55,
-        "type": "Grass",
-        "super effective against": ["Water", "Ground", "Rock"],
-        "not very effective against": [
-            "Fire",
-            "Grass",
-            "Poison",
-            "Flying",
-            "Bug",
-            "Dragon",
-            "Steel",
-        ],
-    },
-    "Headbutt": {
-        "name": "Headbutt",
-        "power": 70,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
-    "Absorb": {
-        "name": "Absorb",
-        "power": 20,
-        "type": "Grass",
-        "super effective against": ["Water", "Ground", "Rock"],
-        "not very effective against": [
-            "Fire",
-            "Grass",
-            "Poison",
-            "Flying",
-            "Bug",
-            "Dragon",
-            "Steel",
-        ],
-    },
-    "Fairy Wind": {
-        "name": "Fairy Wind",
-        "power": 40,
-        "type": "Fairy",
-        "super effective against": ["Fighting", "Dragon", "Dark"],
-        "not very effective against": ["Fire", "Poison", "Steel"],
-    },
-    "Struggle Bug": {
-        "name": "Struggle Bug",
-        "power": 50,
-        "type": "Bug",
-        "super effective against": ["Grass", "Psychic", "Dark"],
-        "not very effective against": [
-            "Fire",
-            "Fighting",
-            "Poison",
-            "Flying",
-            "Ghost",
-            "Steel",
-            "Fairy",
-        ],
-    },
-    "Draining Kiss": {
-        "name": "Draining Kiss",
-        "power": 50,
-        "type": "Fairy",
-        "super effective against": ["Fighting", "Dragon", "Dark"],
-        "not very effective against": ["Fire", "Poison", "Steel"],
-    },
-    "Shadow Ball": {
-        "name": "Shadow Ball",
-        "power": 80,
-        "type": "Ghost",
-        "super effective against": ["Psychic", "Ghost"],
-        "not very effective against": ["Dark"],
-    },
+    "Scratch": lambda me, other: simpleDmgMove(
+        me, other, 40, ["N/A"], ["Rock", "Steel"]
+    ),
+    "Tackle": lambda me, other: simpleDmgMove(
+        me, other, 40, ["N/A"], ["Rock", "Steel"]
+    ),
+    "Pound": lambda me, other: simpleDmgMove(me, other, 40, ["N/A"], ["Rock", "Steel"]),
+    "Rage": lambda me, other: simpleDmgMove(me, other, 20, ["N/A"], ["Rock", "Steel"]),
+    "Fury Attack": lambda me, other: simpleDmgMove(
+        me, other, 15, ["N/A"], ["Rock", "Steel"]
+    ),
+    "Ember": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        40,
+        ["Grass", "Ice", "Bug", "Steel"],
+        ["Fire", "Water", "Rock", "Dragon"],
+    ),
+    "Fire Spin": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        35,
+        ["Grass", "Ice", "Bug", "Steel"],
+        ["Fire", "Water", "Rock", "Dragon"],
+    ),
+    "Bubble": lambda me, other: simpleDmgMove(
+        me, other, 40, ["Fire", "Ground", "Rock"], ["Water", "Grass", "Dragon"]
+    ),
+    "Aqua Jet": lambda me, other: simpleDmgMove(
+        me, other, 40, ["Fire", "Ground", "Rock"], ["Water", "Grass", "Dragon"]
+    ),
+    "Thunder Shock": lambda me, other: simpleDmgMove(
+        me, other, 40, ["Water", "Flying"], ["Electric", "Grass", "Dragon"]
+    ),
+    "Thunderbolt": lambda me, other: simpleDmgMove(
+        me, other, 90, ["Water", "Flying"], ["Electric", "Grass", "Dragon"]
+    ),
+    "Vine Whip": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        45,
+        ["Water", "Ground", "Rock"],
+        ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
+    ),
+    "Magical Leaf": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        60,
+        ["Water", "Ground", "Rock"],
+        ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
+    ),
+    "Ice Shard": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        40,
+        ["Grass", "Ground", "Flying", "Dragon"],
+        ["Fire", "Water", "Ice", "Steel"],
+    ),
+    "Double Kick": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        30,
+        ["Normal", "Ice", "Rock", "Dark", "Steel"],
+        ["Poison", "Flying", "Psychic", "Bug", "Fairy"],
+    ),
+    "Earthquake": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        100,
+        ["Fire", "Electric", "Poison", "Rock", "Steel"],
+        ["Grass", "Bug"],
+    ),
+    "Wing Attack": lambda me, other: simpleDmgMove(
+        me, other, 60, ["Grass", "Fighting", "Bug"], ["Electric", "Rock", "Steel"]
+    ),
+    "Peck": lambda me, other: simpleDmgMove(
+        me, other, 35, ["Grass", "Fighting", "Bug"], ["Electric", "Rock", "Steel"]
+    ),
+    "Confusion": lambda me, other: simpleDmgMove(
+        me, other, 50, ["Fighting", "Poison"], ["Psychic", "Steel"]
+    ),
+    "Twineedle": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        25,
+        ["Grass", "Psychic", "Dark"],
+        ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"],
+    ),
+    "Rock Throw": lambda me, other: simpleDmgMove(
+        me, other, 50, ["Fire", "Ice", "Flying", "Bug"], ["Fighting", "Ground", "Steel"]
+    ),
+    "Rock Slide": lambda me, other: simpleDmgMove(
+        me, other, 75, ["Fire", "Ice", "Flying", "Bug"], ["Fighting", "Ground", "Steel"]
+    ),
+    "Lick": lambda me, other: simpleDmgMove(
+        me, other, 30, ["Psychic", "Ghost"], ["Dark"]
+    ),
+    "Outrage": lambda me, other: simpleDmgMove(me, other, 120, ["Dragon"], ["Steel"]),
+    "Crunch": lambda me, other: simpleDmgMove(
+        me, other, 80, ["Psychic", "Ghost"], ["Fighting", "Dark", "Fairy"]
+    ),
+    "Bite": lambda me, other: simpleDmgMove(
+        me, other, 60, ["Psychic", "Ghost"], ["Fighting", "Dark", "Fairy"]
+    ),
+    "Flash Cannon": lambda me, other: simpleDmgMove(
+        me, other, 80, ["Ice", "Rock", "Fairy"], ["Fire", "Water", "Electric", "Steel"]
+    ),
+    "Smog": lambda me, other: simpleDmgMove(
+        me, other, 30, ["Grass", "Fairy"], ["Poison", "Ground", "Rock", "Ghost"]
+    ),
+    "Dream Eater": lambda me, other: simpleDmgMove(
+        me, other, 100, ["Fighting", "Poison"], ["Psychic", "Steel"]
+    ),
+    "Body Slam": lambda me, other: simpleDmgMove(
+        me, other, 85, ["N/A"], ["Rock", "Steel"]
+    ),
+    "Double Slap": lambda me, other: simpleDmgMove(
+        me, other, 15, ["N/A"], ["Rock", "Steel"]
+    ),
+    "Razor Leaf": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        55,
+        ["Water", "Ground", "Rock"],
+        ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
+    ),
+    "Headbutt": lambda me, other: simpleDmgMove(
+        me, other, 70, ["N/A"], ["Rock", "Steel"]
+    ),
+    "Absorb": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        20,
+        ["Water", "Ground", "Rock"],
+        ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
+    ),
+    "Fairy Wind": lambda me, other: simpleDmgMove(
+        me, other, 40, ["Fighting", "Dragon", "Dark"], ["Fire", "Poison", "Steel"]
+    ),
+    "Struggle Bug": lambda me, other: simpleDmgMove(
+        me,
+        other,
+        50,
+        ["Grass", "Psychic", "Dark"],
+        ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"],
+    ),
+    "Draining Kiss": lambda me, other: simpleDmgMove(
+        me, other, 50, ["Fighting", "Dragon", "Dark"], ["Fire", "Poison", "Steel"]
+    ),
+    "Shadow Ball": lambda me, other: simpleDmgMove(
+        me, other, 80, ["Psychic", "Ghost"], ["Dark"]
+    ),
 }
