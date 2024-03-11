@@ -1,3 +1,5 @@
+def numberToBar(val, maxi, leng):
+    return "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
 class StatusEffect:
     def __init__(self, effect, duration=2):
         self.effect = effect # A function object
@@ -21,6 +23,8 @@ class Pokemon:
         self.health -= dmg
         if self.health <= 0:
             pass # lol idk
+    def __str__(self):
+        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 10)} {self.health}/{self.maxHealth}"
     def Heal(self, amt):
         self.health = max(self.health + amt, self.maxHealth)
         # Update status message in UI
