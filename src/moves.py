@@ -33,15 +33,15 @@ statusFire = StatusEffect(inflictFireMove)
 
 MOVES_DICTIONARY = {
     "Scratch": lambda me, other: simpleDmgMove(
-        me, other, 40, ["N/A"], ["Rock", "Steel"]
+        me, other, 40, [], ["Rock", "Steel"]
     ),
     "Tackle": lambda me, other: simpleDmgMove(
-        me, other, 40, ["N/A"], ["Rock", "Steel"]
+        me, other, 40, [], ["Rock", "Steel"]
     ),
-    "Pound": lambda me, other: simpleDmgMove(me, other, 40, ["N/A"], ["Rock", "Steel"]),
-    "Rage": lambda me, other: simpleDmgMove(me, other, 20, ["N/A"], ["Rock", "Steel"]),
+    "Pound": lambda me, other: simpleDmgMove(me, other, 40, [], ["Rock", "Steel"]),
+    "Rage": lambda me, other: simpleDmgMove(me, other, 20, [], ["Rock", "Steel"]),
     "Fury Attack": lambda me, other: simpleDmgMove(
-        me, other, 15, ["N/A"], ["Rock", "Steel"]
+        me, other, 15, [], ["Rock", "Steel"]
     ),
     "Ember": lambda me, other: simpleDmgMove(
         me,
@@ -146,10 +146,10 @@ MOVES_DICTIONARY = {
         me, other, 100, ["Fighting", "Poison"], ["Psychic", "Steel"]
     ),
     "Body Slam": lambda me, other: simpleDmgMove(
-        me, other, 85, ["N/A"], ["Rock", "Steel"]
+        me, other, 85, [], ["Rock", "Steel"]
     ),
     "Double Slap": lambda me, other: simpleDmgMove(
-        me, other, 15, ["N/A"], ["Rock", "Steel"]
+        me, other, 15, [], ["Rock", "Steel"]
     ),
     "Razor Leaf": lambda me, other: simpleDmgMove(
         me,
@@ -159,7 +159,7 @@ MOVES_DICTIONARY = {
         ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
     ),
     "Headbutt": lambda me, other: simpleDmgMove(
-        me, other, 70, ["N/A"], ["Rock", "Steel"]
+        me, other, 70, [], ["Rock", "Steel"]
     ),
     "Absorb": lambda me, other: simpleDmgMove(
         me,
