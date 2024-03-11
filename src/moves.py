@@ -1,3 +1,5 @@
+from pokemon import *
+statusFire = StatusEffect()
 def simpleDmgMove(self, other, power=0,effective=[],noteffective=[]):
     if other.type in effective:
         other.Damage(power * 2)
@@ -5,6 +7,13 @@ def simpleDmgMove(self, other, power=0,effective=[],noteffective=[]):
         other.Damage(power // 2)
     else:
         other.Damage(power)
+    # Add to UI
+def tickFire(self):
+    self.Damage(10)
+    # Add to UI
+def inflictFireMove(self, other, power=0, effective=[],noteffective=[]):
+    simpleDmgMove(self, other, power, effective, noteffective)
+    other.addStatus(statusFire.deepcopy())
 MOVES_DICTIONARY = {
     "Scratch": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
     "Tackle": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
