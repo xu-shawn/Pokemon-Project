@@ -1,39 +1,16 @@
+def simpleDmgMove(self, other, power=0,effective=[],noteffective=[]):
+    if other.type in effective:
+        other.Damage(power * 2)
+    elif other.type in noteffective:
+        other.Damage(power // 2)
+    else:
+        other.Damage(power)
 MOVES_DICTIONARY = {
-    "Scratch": {
-        "name": "Scratch",
-        "power": 40,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
-    "Tackle": {
-        "name": "Tackle",
-        "power": 40,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
-    "Pound": {
-        "name": "Pound",
-        "power": 40,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
-    "Rage": {
-        "name": "Rage",
-        "power": 20,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
-    "Fury Attack": {
-        "name": "Fury Attack",
-        "power": 15,
-        "type": "Normal",
-        "super effective against": ["N/A"],
-        "not very effective against": ["Rock", "Steel"],
-    },
+    "Scratch": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
+    "Tackle": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
+    "Pound": lambda me,other : simpleDmgMove(me,other,40,[],["Rock", "Steel"]),
+    "Rage": lambda me,other : simpleDmgMove(me,other,20,[],["Rock", "Steel"]),
+    "Fury Attack": lambda me,other : simpleDmgMove(me,other,15,[],["Rock", "Steel"]), # ... and so on
     "Ember": {
         "name": "Ember",
         "power": 40,
