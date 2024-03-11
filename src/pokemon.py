@@ -48,8 +48,10 @@ class Pokemon:
     def fight(self, other: "Pokemon"):
         pass
 
-    def calculate_damage(self, type: int, power: int):
-        modifier: float = uniform(0.85, 1) * type * (1 + (randint(0, 511) < self.speed))
+    def calculate_damage(self, ttype: int, power: int):
+        modifier: float = (
+            uniform(0.85, 1) * ttype * (1 + (randint(0, 511) < self.speed))
+        )
         return (2 * self.level / 5 + 2) * power * self.attack / self.defense
 
     def Damage(self, dmg):
