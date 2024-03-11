@@ -1,7 +1,38 @@
 from random import uniform, randint
-
+class TextModifiers: # Stores ANSI escape sequences that change the text but its actually readable
+    BLACK = "\033[0;30m"
+    RED = "\033[0;31m"
+    GREEN = "\033[0;32m"
+    BROWN = "\033[0;33m"
+    BLUE = "\033[0;34m"
+    PURPLE = "\033[0;35m"
+    CYAN = "\033[0;36m"
+    LIGHT_GRAY = "\033[0;37m"
+    DARK_GRAY = "\033[1;30m"
+    LIGHT_RED = "\033[1;31m"
+    LIGHT_GREEN = "\033[1;32m"
+    YELLOW = "\033[1;33m"
+    LIGHT_BLUE = "\033[1;34m"
+    LIGHT_PURPLE = "\033[1;35m"
+    LIGHT_CYAN = "\033[1;36m"
+    LIGHT_WHITE = "\033[1;37m"
+    BOLD = "\033[1m"
+    FAINT = "\033[2m"
+    ITALIC = "\033[3m"
+    UNDERLINE = "\033[4m"
+    BLINK = "\033[5m"
+    NEGATIVE = "\033[7m"
+    CROSSED = "\033[9m"
+    END = "\033[0m"
+TM = TextModifiers # Alias
 def numberToBar(val, maxi, leng):
-    return "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
+    if val / maxi < 0.3:
+        d = TM.LIGHT_RED
+    elif val / maxi < 0.6:
+        d = TM.YELLOW
+    else:
+        d = TM.GREEN
+    return d + "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
 
 class StatusEffect:
     def __init__(self, effect, duration=2):
@@ -61,7 +92,7 @@ class Pokemon:
         if self.health <= 0:
             pass # lol idk
     def __str__(self):
-        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 10)} {self.health}/{self.maxHealth}"
+        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 10)} {self.health}/{self.maxHealth}{TM.END}"
 
     def Heal(self, amt):
         self.health = max(self.health + amt, self.maxHealth)
