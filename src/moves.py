@@ -1,15 +1,21 @@
 from pokemon import *
 
-statusFire = StatusEffect()
 
+def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
 
-def simpleDmgMove(self, other, power=0, effective=[], noteffective=[]):
+    effectiveness: int = 1
+
     if other.type in effective:
-        other.Damage(power * 2)
+        effectiveness = 2
     elif other.type in noteffective:
-        other.Damage(power // 2)
-    else:
-        other.Damage(power)
+        effectiveness = 0.5
+
+    modifier: float = (
+        uniform(0.85, 1) * effectiveness * (1 + (randint(0, 511) < me.speed))
+    )
+
+    other.Damage((2 * me.level / 5 + 2) * power * me.attack / me.defense)
+
     # Add to UI
 
 
@@ -22,6 +28,8 @@ def inflictFireMove(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
     other.addStatus(statusFire.deepcopy())
 
+
+statusFire = StatusEffect(inflictFireMove)
 
 MOVES_DICTIONARY = {
     "Scratch": lambda me, other: simpleDmgMove(
@@ -177,3 +185,10 @@ MOVES_DICTIONARY = {
         me, other, 80, ["Psychic", "Ghost"], ["Dark"]
     ),
 }
+
+
+for name, _ in MOVES_DICTIONARY.items():
+    print(f'"{name}"', end=", ")
+
+
+MOVE_NAMES = MOVES_DICTIONARY.keys()
