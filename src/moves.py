@@ -185,10 +185,3 @@ MOVES_DICTIONARY = {
         me, other, 80, ["Psychic", "Ghost"], ["Dark"]
     ),
 }
-
-
-for name, _ in MOVES_DICTIONARY.items():
-    print(f'"{name}"', end=", ")
-
-
-MOVE_NAMES = MOVES_DICTIONARY.keys()
