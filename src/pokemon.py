@@ -76,12 +76,15 @@ class Pokemon:
 
     @property
     def level(self):
-        return self.experience ** (1 / 3)
+        return int(self.experience ** (1 / 3))
 
     def fight(self, other: "Pokemon"):
         pass
 
     def calculate_damage(self, ttype: int, power: int):
+        '''
+        calculate_damage(ttype, power)
+        '''
         modifier: float = (
             uniform(0.85, 1) * ttype * (1 + (randint(0, 511) < self.speed))
         )
@@ -95,14 +98,28 @@ class Pokemon:
         return f"{self.name} - {numberToBar(self.health, self.maxHealth, 10)} {self.health}/{self.maxHealth}{TM.END}"
 
     def Heal(self, amt):
+        '''
+        Heal(amt)
+        Heals the pokemon for the specified amount of health, up to a max of its maxHealth.
+        '''
         self.health = max(self.health + amt, self.maxHealth)
         # Update status message in UI
 
     def TickStatusEffects(self):
+        '''
+        TickStatusEffects()
+        Runs the function specified in every status effect 
+        currently attached to the pokemon, and removes them from the list
+        if its duration has passed.
+        '''
         # Run every function in the Status Effects list on self
         for effect in self.statusEffects:
             if effect.Run(self):
                 self.statusEffects.remove(effect)
 
     def addStatus(self, status):
+        '''
+        addStatus(status)
+        Adds the specified status to the pokemon
+        '''
         self.statusEffects.append(status)
