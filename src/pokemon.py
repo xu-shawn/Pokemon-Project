@@ -35,17 +35,22 @@ def numberToBar(val, maxi, leng):
     return d + "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
 
 class StatusEffect:
-    def __init__(self, effect, duration=2):
+    def __init__(self, effect, finish, duration=2):
         self.effect = effect  # A function object
         self.duration = duration
-
+        self.initialDuration = duration
+        self.finish = finish
     def Run(self, target):
+        if self.duration == self.initialDuration:
+            self.targetInitStats = target.getStats()
         self.duration -= 1
         self.effect(target)
         if self.duration <= 0:
+            self.EndStatus(self, target)
             return True
         return False
-
+    def EndStatus(self, target):
+        self.finish(target, self.targetInitStats) # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
 
 class Pokemon:
     def __init__(
@@ -77,7 +82,25 @@ class Pokemon:
     @property
     def level(self):
         return int(self.experience ** (1 / 3))
-
+    def getStats(self):
+        '''
+        Gets stats as a dictionary
+        '''
+        return {
+            "Name": self.name,
+            "Type": self.type,
+            "Health": self.health,
+            "Max Health": self.maxHealth,
+            "Moves": self.moves,
+            "Attack": self.attack,
+            "Defense": self.defense,
+            "Speed": self.speed,
+            "Experience": self.experience,
+            "Level": self.level,
+            "Description": self.description,
+            "Status Effects": self.statusEffects
+            # Add other stats as needed
+        }
     def fight(self, other: "Pokemon"):
         pass
 

@@ -18,18 +18,31 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
 
     # Add to UI
 
-
 def tickFire(self):
     self.Damage(10)
     # Add to UI
+def tickPoison(self):
+    self.Damage(10)
+    # Add to UI
+def tickWeaken(self):
+    self.attack -= 2
+    self.defence -= 2
+    # Add to UI
+def endWeaken(self):
+    
+def tickFrozen(self):
+    self.speed = 0 # This will 
+statusFire = StatusEffect(tickFire, lambda a : a)
+statusFire = StatusEffect(inflictFireMove)
+
+def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
+    simpleDmgMove(self, other, power, effective, noteffective)
 
 
 def inflictFireMove(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
     other.addStatus(statusFire.deepcopy())
 
-
-statusFire = StatusEffect(inflictFireMove)
 
 MOVES_DICTIONARY = {
     "Scratch": lambda me, other: simpleDmgMove(
@@ -184,4 +197,7 @@ MOVES_DICTIONARY = {
     "Shadow Ball": lambda me, other: simpleDmgMove(
         me, other, 80, ["Psychic", "Ghost"], ["Dark"]
     ),
+    "Spread Covid": lambda me, other: inflictEverything(
+        me, other, 0, [], []
+    ) # This is a test move because lmao ha ha
 }
