@@ -106,11 +106,9 @@ class Pokemon:
         if its duration has passed.
         """
         # Run every function in the Status Effects list on self
-        for effect in self.statusEffects:
-            if effect.Run(self):  # Run returns true if the effect expires.
-                self.statusEffects.remove(effect)
-                print(effect)
-
+        # This should ensure that even if elements are removed
+        # during iteration, all status effects are triggered.
+        self.statusEffects = [x for x in self.statusEffects if not x.Run(self)]
     def addStatus(self, status):
         """
         addStatus(status)
