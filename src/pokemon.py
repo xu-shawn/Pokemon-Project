@@ -35,12 +35,15 @@ def numberToBar(val, maxi, leng):
     return d + "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
 
 class StatusEffect:
-    def __init__(self, name, effect, finish, duration=2):
+    def __init__(self, name, start, effect, finish, duration=2):
         self.name = name
+        self.startup = start
         self.effect = effect  # A function object
         self.duration = duration
         self.initialDuration = duration
         self.finish = finish
+    def StartRunning(self, target):
+        self.startup(target)
     def Run(self, target):
         if self.duration == self.initialDuration:
             target.statModifiers[self.name] = {
@@ -152,8 +155,11 @@ class Pokemon:
         '''
         addStatus(status)
         Adds the specified status to the pokemon
+        and runs the specified startup
         '''
         self.statusEffects.append(status)
+        status.start
+
     def checkForStatus(self, statusName):
         for stat in self.statusEffects:
             if stat.name == statusName:
