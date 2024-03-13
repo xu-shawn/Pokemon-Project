@@ -1,4 +1,5 @@
 from random import uniform, randint
+from moves import *
 class TextModifiers: # Stores ANSI escape sequences that change the text but its actually readable
     BLACK = "\033[0;30m"
     RED = "\033[0;31m"
@@ -110,7 +111,6 @@ class Pokemon:
             "Level": self.level,
             "Description": self.description,
             "Status Effects": self.statusEffects
-            # Add other stats as needed
         }
     def fight(self, other: "Pokemon"):
         pass
@@ -118,18 +118,23 @@ class Pokemon:
     def calculate_damage(self, ttype: int, power: int):
         '''
         calculate_damage(ttype, power)
+        Calculates the amount of damage to deal based off type diff between pokemon and power of the move. Wait, shouldnt this be a global function not class method?
         '''
         modifier: float = (
             uniform(0.85, 1) * ttype * (1 + (randint(0, 511) < self.speed))
-        )
+        )   
         return (2 * self.level / 5 + 2) * power * self.attack / self.defense
 
-    def Damage(self, dmg):
+    def TakeDamage(self, dmg):
+        '''
+        Damages the pokemon for the specified amount.
+        DOES NOT do the calculation.
+        '''
         self.health -= dmg
         if self.health <= 0:
             pass # lol idk
     def __str__(self):
-        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 10)} {self.health}/{self.maxHealth}{TM.END}"
+        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 10)} {self.health}/{self.maxHealth}{TM.END}" + ' '.join([str(x) for x in self.statusEffects])
 
     def Heal(self, amt):
         '''
@@ -165,3 +170,10 @@ class Pokemon:
             if stat.name == statusName:
                 return True
         return False
+    
+    def useMove(self, moveName, target):
+        move = MOVES_DICTIONARY.get(moveName, None)
+        if not move:
+            raise ValueError("Move not found! How did this happen?")
+        move(self, target)
+        

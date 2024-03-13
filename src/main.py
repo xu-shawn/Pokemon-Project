@@ -37,18 +37,8 @@ def display_battle_instructions():
     print("Each move has different effects, so choose wisely.")
     print("Type the number associated with the move to choose it.")
 
-def choose_move(moves):
-    print("Choose a move:")
-    moveIndex = 0 
-    for move in moves:
-        print(f"{moveIndex} - {move}")
-    
-    move = input("Your move: ")
-    while move not in moves:
-        print("That's not a valid move. Please choose again.")
-        move = input("Your move: ")
-    
-    return moves[move]
+def choose_move(moves): # Function retired, moved to battle.py
+    pass
 starters = {"Bulbasaur":Pokemon("Bulbasaur", ["Grass"], 100, ["Scratch", "Tackle", "Vine Whip"]
                                 , 20, 20, 25, 0, "A Bulbasaur. What else is there to say?", []),
             "Charmander":Pokemon("Charmander", ["Fire"], 80, ["Scratch", "Tackle", "Ember"]
