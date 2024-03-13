@@ -42,7 +42,7 @@ TM = TextModifiers  # Alias
 
 
 class UI:
-    def flush_input():
+    def flush_input(self):
         try:
             import msvcrt
 
