@@ -79,7 +79,7 @@ starters = {
         [],
     ),
     "Squirtle": Pokemon(
-        "Bulbasaur",
+        "Squirtle",
         ["Water"],
         120,
         ["Scratch", "Tackle", "Bubble"],
@@ -101,6 +101,7 @@ def main() -> None:
     starterPokemon = starters[starter_name]
     playerPokedex.add_pokemon(starterPokemon)
     del starters[starter_name]
+    time.sleep(3)
     display_battle_instructions()
     # First battle:
     battle(playerPokedex.activePokemon, random.choice(list(starters.values())))

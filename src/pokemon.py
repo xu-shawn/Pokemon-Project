@@ -81,7 +81,7 @@ class Pokemon:
         modifier: float = (
             uniform(0.85, 1) * ttype * (1 + (randint(0, 511) < self.speed))
         )
-        return (2 * self.level / 5 + 2) * power * self.attack / self.defense
+        return int((2 * self.level / 5 + 2) * power * self.attack / self.defense)
 
     def TakeDamage(self, dmg):
         """
