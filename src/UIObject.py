@@ -5,9 +5,9 @@ import time
 def dramaticPause():
     """
     dramaticPause()
-    Another name for "one second wait"
+    Another name for "three second wait"
     """
-    time.sleep(1)
+    time.sleep(3)
     MainUI.flush_input()
 
 

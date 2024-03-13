@@ -41,7 +41,7 @@ def battle(playerPokemon, enemyPokemon):
         # 5.5. Tick status effects for AI
         enemyPokemon.TickStatusEffects()
         # 6. Have AI use a random move.
-
+        
         # 7. Print out UI (again again), with messages.
         MainUI.ResetUI()
         # 8. Loop.

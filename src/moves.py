@@ -1,6 +1,6 @@
 from UIObject import *
 from random import uniform, randint
-
+from copy import deepcopy
 
 class StatusEffect:
     def __init__(self, name, start, effect, finish, duration=2, color=""):
@@ -13,30 +13,29 @@ class StatusEffect:
         self.finish = finish
 
     def StartRunning(self, target):
-        self.startup(target)
-
-    def Run(self, target):
-        if self.duration == self.initialDuration:
-            target.statModifiers[self.name] = {
+        target.statModifiers[self.name] = {
                 "Health": 0,
                 "Max Health": 0,
                 "Attack": 0,
                 "Defense": 0,
                 "Speed": 0,
                 # Add other stats as needed
-            }
+        }
+        self.startup(target)
+
+    def Run(self, target):
         self.duration -= 1
         self.effect(target)
         if self.duration <= 0:
-            self.EndStatus(self, target)
+            self.EndStatus(target)
             return True
         return False
 
     def EndStatus(self, target):
         self.finish(
-            target, self.targetInitStats
+            target
         )  # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
-
+        del target.statModifiers[self.name]
     def __str__(self):
         return f"{self.color}[{self.duration} {self.name}]{TM.END} "
 
@@ -67,32 +66,31 @@ def NullFunction(self):
 
 
 def tickFire(self):
-    self.TakeDamage(10)
+    self.TakeDamage(2)
     MainUI.addMessage(
-        f"{TM.LIGHT_RED}{self.name} took 10 points of FIRE damage!{TM.END}"
+        f"{TM.LIGHT_RED}{self.name} took 2 points of FIRE damage!{TM.END}"
     )
 
 
 def tickPoison(self):
-    self.TakeDamage(10)
+    self.TakeDamage(3)
     MainUI.addMessage(
-        f"{TM.LIGHT_PURPLE}{self.name} took 10 points of POISON damage!{TM.END}"
+        f"{TM.LIGHT_PURPLE}{self.name} took 3 points of POISON damage!{TM.END}"
     )
 
 
 def tickWeaken(self):
     self.attack -= 2
-    self.defence -= 2
-    self.statModifiers["Weaken"]["Attack"] += 2
-    self.statModifiers["Weaken"]["Defence"] += 2
+    self.defense -= 2
+    self.statModifiers["Weakened"]["Attack"] += 2
+    self.statModifiers["Weakened"]["Defense"] += 2
     MainUI.addMessage(f"{TM.LIGHT_GRAY}{self.name} was weakened...{TM.END}")
 
 
 def endWeaken(self):
-    self.attack += self.statModifiers["Weaken"]["Attack"]
-    self.defence += self.statModifiers["Weaken"]["Defence"]
+    self.attack += self.statModifiers["Weakened"]["Attack"]
+    self.defense += self.statModifiers["Weakened"]["Defense"]
     MainUI.addMessage(f"{TM.LIGHT_GRAY}{self.name} is back to full strength!{TM.END}")
-    self.statModifiers.remove("Weaken")
 
 
 def startFrozen(self):
@@ -103,7 +101,6 @@ def startFrozen(self):
 
 def endFrozen(self):
     self.speed += self.statModifiers["Frozen"]["Speed"]
-    self.statModifiers.remove("Frozen")
     MainUI.addMessage(f"{TM.LIGHT_CYAN}{self.name} has thawed out.{TM.END}")
 
 statusEffectDictionary = {"Burning":StatusEffect(
@@ -130,7 +127,7 @@ def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
         effective,
         noteffective,
         ["Burning", "Frozen", "Poisoned", "Weakened"],
-        100
+        [100, 100, 100, 100]
     )
 
 
@@ -144,8 +141,7 @@ def inflictStatusEffectMove(
             if not other.checkForStatus(
                 effect
             ):  # Do not give the pokemon the same effect multiple times. However, do reset the timer.
-                other.addStatus(statusEffectDictionary[effect].deepcopy())  # TODO: Reset the timer
-                other.statusEffects.get()
+                other.addStatus(deepcopy(statusEffectDictionary[effect]))  # TODO: Reset the timer
         index += 1
 
 
@@ -228,7 +224,7 @@ MOVES_DICTIONARY = {
         me, other, 35, ["Grass", "Fighting", "Bug"], ["Electric", "Rock", "Steel"]
     ),
     "Confusion": lambda me, other: inflictStatusEffectMove(
-        me, other, 50, ["Fighting", "Poison"], ["Psychic", "Steel"]
+        me, other, 50, ["Fighting", "Poison"], ["Psychic", "Steel"],
         ["Weakened"], [100]
     ),
     "Twineedle": lambda me, other: simpleDmgMove(

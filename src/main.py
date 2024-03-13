@@ -73,7 +73,7 @@ starters = {
     "Bulbasaur": Pokemon(
         "Bulbasaur",
         ["Grass"],
-        20,
+        2000, # INFLATED HEALTH IS FOR TESTING
         ["Scratch", "Tackle", "Vine Whip"],
         20,
         20,
@@ -86,7 +86,7 @@ starters = {
         "Charmander",
         ["Fire"],
         17,
-        ["Scratch", "Tackle", "Ember"],
+        ["Scratch", "Tackle", "Ember", "Spread Covid"], # Includs test move to test status effects
         25,
         15,
         20,
@@ -97,7 +97,7 @@ starters = {
     "Squirtle": Pokemon(
         "Squirtle",
         ["Water"],
-        23,
+        2300,
         ["Scratch", "Tackle", "Bubble"],
         15,
         25,
