@@ -104,6 +104,7 @@ class Pokemon:
         for effect in self.statusEffects:
             if effect.Run(self):  # Run returns true if the effect expires.
                 self.statusEffects.remove(effect)
+                print(effect)
 
     def addStatus(self, status):
         """

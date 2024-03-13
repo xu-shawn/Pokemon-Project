@@ -32,6 +32,8 @@ def battle(playerPokemon, enemyPokemon):
     # Start loop:
     while playerPokemon.health > 0 and enemyPokemon.health > 0:
         playerPokemon.TickStatusEffects()
+        if playerPokemon.health <= 0:
+            break
         # 1. Tick status effects for player
         # 2. Print out the UI object.
         MainUI.ResetUI()
@@ -39,13 +41,13 @@ def battle(playerPokemon, enemyPokemon):
         toUse = requestMove(playerPokemon)
         # 4. Use move.
         playerPokemon.useMove(toUse, enemyPokemon)
-        if enemyPokemon.Health <= 0:
+        if enemyPokemon.health <= 0:
             break
         # 5. Print out UI (again), with messages.
         MainUI.ResetUI()
         # 5.5. Tick status effects for AI
         enemyPokemon.TickStatusEffects()
-        if enemyPokemon.Health <= 0:
+        if enemyPokemon.health <= 0:
             break
         # 6. Have AI use a random move.
         if enemyPokemon.health > 0:
