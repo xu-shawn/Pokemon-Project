@@ -1,6 +1,10 @@
 import os
 import time
 from pokemon import *
+import random
+from battle import battle
+from UIObject import MainUI
+from pokedex import *
 def clearScrn():
     '''
     clearScrn()
@@ -48,6 +52,13 @@ starters = {"Bulbasaur":Pokemon("Bulbasaur", ["Grass"], 100, ["Scratch", "Tackle
 
 def main() -> None:
     if __name__ == "__main__":
+        # Initialize Player Pokedex
+        playerPokedex = Pokedex()
         display_welcome()
         starter_name = choose_starter()
+        starterPokemon = starters[starter_name]
+        playerPokedex.add_pokemon(starterPokemon)
         display_battle_instructions()
+        # First battle:
+        battle(playerPokedex.activePokemon, random.choice(list(starters.values())))
+        

@@ -1,7 +1,7 @@
 class Pokedex:
     def __init__(self):
         self.collection = {}
-
+        self.activePokemon = None
     def add_pokemon(self, pokemon):
         """
         Adds a Pokémon to the Pokédex.
@@ -11,6 +11,12 @@ class Pokedex:
             print(f"{pokemon.name} has been added to your Pokédex!")
         else:
             print(f"{pokemon.name} is already in your Pokédex.")
+        b = input(f"Would you like to make {pokemon.name} your active pokemon (first into battle)? (yes/no): ")
+        while b.lower() not in ['no', 'yes']:
+            b = input(f"That's not yes or no. Make {pokemon.name} the active pokemon? (yes/no) ")
+        if b.lower() == 'yes':
+            self.activePokemon = pokemon
+            print(f"{pokemon.name} is now your main pokemon.")
 
     def remove_pokemon(self, name):
         """
