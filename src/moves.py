@@ -1,5 +1,7 @@
 from UIObject import *
 from random import uniform, randint
+
+
 class StatusEffect:
     def __init__(self, name, start, effect, finish, duration=2, color=""):
         self.name = name
@@ -9,28 +11,36 @@ class StatusEffect:
         self.initialDuration = duration
         self.color = color
         self.finish = finish
+
     def StartRunning(self, target):
         self.startup(target)
+
     def Run(self, target):
         if self.duration == self.initialDuration:
             target.statModifiers[self.name] = {
-            "Health": 0,
-            "Max Health": 0,
-            "Attack": 0,
-            "Defense": 0,
-            "Speed": 0,
-            # Add other stats as needed
-        }
+                "Health": 0,
+                "Max Health": 0,
+                "Attack": 0,
+                "Defense": 0,
+                "Speed": 0,
+                # Add other stats as needed
+            }
         self.duration -= 1
         self.effect(target)
         if self.duration <= 0:
             self.EndStatus(self, target)
             return True
         return False
+
     def EndStatus(self, target):
-        self.finish(target, self.targetInitStats) # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
+        self.finish(
+            target, self.targetInitStats
+        )  # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
+
     def __str__(self):
         return f"{self.color}[{self.duration} {self.name}]{TM.END} "
+
+
 def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
 
     effectiveness: int = 1
@@ -47,19 +57,24 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
     other.Damage((2 * me.level / 5 + 2) * power * me.attack / me.defense)
 
     # Add to UI
+
+
 def NullFunction(self):
-    '''
+    """
     A placeholder that does nothing to make the code easier to read.
-    '''
+    """
     return None
+
 
 def tickFire(self):
     self.Damage(10)
     # Add to UI
 
+
 def tickPoison(self):
     self.Damage(10)
     # Add to UI
+
 
 def tickWeaken(self):
     self.attack -= 2
@@ -67,39 +82,61 @@ def tickWeaken(self):
     self.statModifiers["Weaken"]["Attack"] += 2
     self.statModifiers["Weaken"]["Defence"] += 2
 
+
 def endWeaken(self):
     self.attack += self.statModifiers["Weaken"]["Attack"]
     self.defence += self.statModifiers["Weaken"]["Defence"]
     self.statModifiers.remove("Weaken")
 
+
 def startFrozen(self):
     self.statModifiers["Frozen"]["Speed"] = self.speed
-    self.speed = 0 # Maybe make moves fail with probability if speed is much lower than enemy speed
+    self.speed = 0  # Maybe make moves fail with probability if speed is much lower than enemy speed
+
 
 def endFrozen(self):
     self.speed += self.statModifiers["Frozen"]["Speed"]
     self.statModifiers.remove("Frozen")
 
+
 statusFire = StatusEffect("Burning", NullFunction, tickFire, NullFunction, TM.LIGHT_RED)
-statusFrozen = StatusEffect("Frozen", startFrozen, NullFunction, endFrozen, TM.LIGHT_CYAN)
-statusPoison = StatusEffect("Poisoned", NullFunction, tickPoison, NullFunction, TM.LIGHT_PURPLE)
-statusWeaken = StatusEffect("Weakened", NullFunction, tickWeaken, endWeaken, TM.LIGHT_GRAY)
+statusFrozen = StatusEffect(
+    "Frozen", startFrozen, NullFunction, endFrozen, TM.LIGHT_CYAN
+)
+statusPoison = StatusEffect(
+    "Poisoned", NullFunction, tickPoison, NullFunction, TM.LIGHT_PURPLE
+)
+statusWeaken = StatusEffect(
+    "Weakened", NullFunction, tickWeaken, endWeaken, TM.LIGHT_GRAY
+)
+
 
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
-    inflictStatusEffectMove(self, other, power, effective, noteffective, ["Burning", "Frozen", "Poisoned", "Weakened"])
-def inflictStatusEffectMove(self, other, power=0, effective=[], noteffective=[], effects=[]):
+    inflictStatusEffectMove(
+        self,
+        other,
+        power,
+        effective,
+        noteffective,
+        ["Burning", "Frozen", "Poisoned", "Weakened"],
+    )
+
+
+def inflictStatusEffectMove(
+    self, other, power=0, effective=[], noteffective=[], effects=[]
+):
     simpleDmgMove(self, other, power, effective, noteffective)
     for effect in effects:
-        if not other.checkForStatus(effect): # Do not give the pokemon the same effect multiple times. However, do reset the timer.
-            other.addStatus(statusFire.deepcopy()) # TODO: Reset the timer
+        if not other.checkForStatus(
+            effect
+        ):  # Do not give the pokemon the same effect multiple times. However, do reset the timer.
+            other.addStatus(statusFire.deepcopy())  # TODO: Reset the timer
             other.statusEffects.get()
+
+
 MOVES_DICTIONARY = {
-    "Scratch": lambda me, other: simpleDmgMove(
-        me, other, 40, [], ["Rock", "Steel"]
-    ),
-    "Tackle": lambda me, other: simpleDmgMove(
-        me, other, 40, [], ["Rock", "Steel"]
-    ),
+    "Scratch": lambda me, other: simpleDmgMove(me, other, 40, [], ["Rock", "Steel"]),
+    "Tackle": lambda me, other: simpleDmgMove(me, other, 40, [], ["Rock", "Steel"]),
     "Pound": lambda me, other: simpleDmgMove(me, other, 40, [], ["Rock", "Steel"]),
     "Rage": lambda me, other: simpleDmgMove(me, other, 20, [], ["Rock", "Steel"]),
     "Fury Attack": lambda me, other: simpleDmgMove(
@@ -207,9 +244,7 @@ MOVES_DICTIONARY = {
     "Dream Eater": lambda me, other: simpleDmgMove(
         me, other, 100, ["Fighting", "Poison"], ["Psychic", "Steel"]
     ),
-    "Body Slam": lambda me, other: simpleDmgMove(
-        me, other, 85, [], ["Rock", "Steel"]
-    ),
+    "Body Slam": lambda me, other: simpleDmgMove(me, other, 85, [], ["Rock", "Steel"]),
     "Double Slap": lambda me, other: simpleDmgMove(
         me, other, 15, [], ["Rock", "Steel"]
     ),
@@ -220,9 +255,7 @@ MOVES_DICTIONARY = {
         ["Water", "Ground", "Rock"],
         ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
     ),
-    "Headbutt": lambda me, other: simpleDmgMove(
-        me, other, 70, [], ["Rock", "Steel"]
-    ),
+    "Headbutt": lambda me, other: simpleDmgMove(me, other, 70, [], ["Rock", "Steel"]),
     "Absorb": lambda me, other: simpleDmgMove(
         me,
         other,
@@ -248,5 +281,5 @@ MOVES_DICTIONARY = {
     ),
     "Spread Covid": lambda me, other: inflictEverything(
         me, other, 0, [], []
-    ) # This is a test move because lmao ha ha
+    ),  # This is a test move because lmao ha ha
 }

@@ -1,25 +1,28 @@
 from pokemon import *
-from pokedex import * # Replace star imports later
+from pokedex import *  # Replace star imports later
 from moves import *
 from UIObject import *
 import os
 import time
 
+
 def requestMove(player, UI):
     print("Choose a move:")
-    moveIndex = 0 
+    moveIndex = 0
     moves = player.moves
     for move in moves:
         print(f"{moveIndex} - {move}")
         moveIndex += 1
     move = input("Your move: ")
-    moveList = [str(x) for x in range(0, moveIndex)] # Hacky solution, clean up.
+    moveList = [str(x) for x in range(0, moveIndex)]  # Hacky solution, clean up.
     while move not in moveList:
         print("That's not a valid move. Please choose again.")
-        move = input(f"Your move (0 to {moveIndex - 1}): ") # Maybe 1 index it?
+        move = input(f"Your move (0 to {moveIndex - 1}): ")  # Maybe 1 index it?
     selectedMove = moves[int(move)]
-    MainUI.addMessage(f"{player.Name} used {selectedMove}") # MainUI is a global obj.
+    MainUI.addMessage(f"{player.Name} used {selectedMove}")  # MainUI is a global obj.
     return selectedMove
+
+
 def battle(playerPokemon, enemyPokemon):
     MainUI.resetPokemon(playerPokemon, enemyPokemon)
     # Here we go.
@@ -42,7 +45,7 @@ def battle(playerPokemon, enemyPokemon):
         # 5.5. Tick status effects for AI
         enemyPokemon.TickStatusEffects()
         # 6. Have AI use a random move.
-        
+
         # 7. Print out UI (again again), with messages.
         MainUI.ResetUI()
         # 8. Loop.

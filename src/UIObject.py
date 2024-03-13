@@ -1,12 +1,16 @@
 import os
 import time
+
+
 def dramaticPause():
     """
     dramaticPause()
     Another name for "one second wait"
     """
     time.sleep(1)
-class TextModifiers: # Stores ANSI escape sequences that change the text but its actually readable
+
+
+class TextModifiers:  # Stores ANSI escape sequences that change the text but its actually readable
     BLACK = "\033[0;30m"
     RED = "\033[0;31m"
     GREEN = "\033[0;32m"
@@ -31,15 +35,21 @@ class TextModifiers: # Stores ANSI escape sequences that change the text but its
     NEGATIVE = "\033[7m"
     CROSSED = "\033[9m"
     END = "\033[0m"
-TM = TextModifiers # Alias
+
+
+TM = TextModifiers  # Alias
+
+
 class UI:
     def __init__(self, p1, p2):
         self.ours = p1
         self.other = p2
         self.messages = []
+
     def resetPokemon(self, p1, p2):
         self.ours = p1
         self.other = p2
+
     def ResetUI(self):
         os.run("cls")
         print(str(self.ours))
@@ -49,7 +59,10 @@ class UI:
             print(x)
         self.messages = []
         dramaticPause()
+
     def addMessage(self, add):
         self.messages += add
+
+
 global MainUI
 MainUI = UI(None, None)
