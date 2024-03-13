@@ -51,7 +51,10 @@ class UI:
         self.other = p2
 
     def ResetUI(self):
-        os.run("cls")
+        if os.name == "nt":
+            os.run("cls")
+        else:
+            os.system("clear")
         print(str(self.ours))
         print(str(self.other))
         print()

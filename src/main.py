@@ -12,7 +12,7 @@ def clearScrn():
     if os.name == "nt":
         os.run("clear")
     else:
-        os.run("clr")
+        os.system("clr")
     time.wait(0.5)
 
 
