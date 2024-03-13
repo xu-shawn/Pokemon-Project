@@ -41,16 +41,19 @@ def choose_starter():
     print(f"Great choice! You chose {choice}.")
     return choice
 
+
 def display_battle_instructions():
     print("Now that you have your Pokémon, you're ready to battle.")
     print("During a battle, you can choose a move for your Pokémon to use.")
     print("Each move has different effects, so choose wisely.")
     print("Type the number associated with the move to choose it.")
-  
+
+
 def explore_and_battle(player_pokedex):
     wild_pokemon = random.choice(list(starters.values()))
     print(f"\nA wild {wild_pokemon.name} appears!")
     battle(player_pokedex.active_pokemon, wild_pokemon)
+
 
 def capture_attempt(player_pokedex, wild_pokemon):
     # Simplified capture mechanic
@@ -111,11 +114,11 @@ def main():
     starter_name = choose_starter()
     starterPokemon = starters[starter_name]
     player_pokedex = Pokedex()
-    playerPokedex.add_pokemon(starterPokemon)
+    player_pokedex.add_pokemon(starterPokemon)
     del starters[starter_name]
     time.sleep(3)
     display_battle_instructions()
-    
+
     for _ in range(3):
         explore_and_battle(player_pokedex)
         capture_attempt(player_pokedex, player_pokedex.active_pokemon)
