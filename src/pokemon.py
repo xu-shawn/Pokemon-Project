@@ -1,5 +1,7 @@
 from random import uniform, randint
 from moves import *
+from UIObject import *
+from moves import *
 class TextModifiers: # Stores ANSI escape sequences that change the text but its actually readable
     BLACK = "\033[0;30m"
     RED = "\033[0;31m"
@@ -36,12 +38,13 @@ def numberToBar(val, maxi, leng):
     return d + "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
 
 class StatusEffect:
-    def __init__(self, name, start, effect, finish, duration=2):
+    def __init__(self, name, start, effect, finish, duration=2, color=""):
         self.name = name
         self.startup = start
         self.effect = effect  # A function object
         self.duration = duration
         self.initialDuration = duration
+        self.color = color
         self.finish = finish
     def StartRunning(self, target):
         self.startup(target)
@@ -63,7 +66,8 @@ class StatusEffect:
         return False
     def EndStatus(self, target):
         self.finish(target, self.targetInitStats) # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
-
+    def __str__(self):
+        return f"{self.color}[{self.duration} {self.name}]{TM.END} "
 class Pokemon:
     def __init__(
         self,
@@ -142,7 +146,7 @@ class Pokemon:
         Heals the pokemon for the specified amount of health, up to a max of its maxHealth.
         '''
         self.health = max(self.health + amt, self.maxHealth)
-        # Update status message in UI
+        MainUI.addMessage(f"{TM.GREEN}{self.name} heals for {amt} health!{TM.END}")
 
     def TickStatusEffects(self):
         '''
@@ -153,7 +157,7 @@ class Pokemon:
         '''
         # Run every function in the Status Effects list on self
         for effect in self.statusEffects:
-            if effect.Run(self):
+            if effect.Run(self): # Run returns true if the effect expires.
                 self.statusEffects.remove(effect)
 
     def addStatus(self, status):
@@ -163,7 +167,7 @@ class Pokemon:
         and runs the specified startup
         '''
         self.statusEffects.append(status)
-        status.start
+        status.StartRunning(self)
 
     def checkForStatus(self, statusName):
         for stat in self.statusEffects:
@@ -172,6 +176,9 @@ class Pokemon:
         return False
     
     def useMove(self, moveName, target):
+        '''
+        Use the specified move on the target pokemon.
+        '''
         move = MOVES_DICTIONARY.get(moveName, None)
         if not move:
             raise ValueError("Move not found! How did this happen?")

@@ -50,14 +50,13 @@ def endFrozen(self):
     self.speed += self.statModifiers["Frozen"]["Speed"]
     self.statModifiers.remove("Frozen")
 
-statusFire = StatusEffect("Burning", NullFunction, tickFire, NullFunction)
-statusFrozen = StatusEffect("Frozen", startFrozen, NullFunction, endFrozen)
-statusPoison = StatusEffect("Poisoned", NullFunction, tickPoison, NullFunction)
-statusWeaken = StatusEffect("Weakened", NullFunction, tickWeaken, endWeaken)
+statusFire = StatusEffect("Burning", NullFunction, tickFire, NullFunction, TM.LIGHT_RED)
+statusFrozen = StatusEffect("Frozen", startFrozen, NullFunction, endFrozen, TM.LIGHT_CYAN)
+statusPoison = StatusEffect("Poisoned", NullFunction, tickPoison, NullFunction, TM.LIGHT_PURPLE)
+statusWeaken = StatusEffect("Weakened", NullFunction, tickWeaken, endWeaken, TM.LIGHT_GRAY)
 
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
-    simpleDmgMove(self, other, power, effective, noteffective)
-    # WORK IN PROGRESS LOL
+    inflictStatusEffectMove(self, other, power, effective, noteffective, ["Burning", "Frozen", "Poisoned", "Weakened"])
 def inflictStatusEffectMove(self, other, power=0, effective=[], noteffective=[], effects=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
     for effect in effects:
