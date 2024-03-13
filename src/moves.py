@@ -1,6 +1,36 @@
-from pokemon import *
-
-
+from UIObject import *
+from random import uniform, randint
+class StatusEffect:
+    def __init__(self, name, start, effect, finish, duration=2, color=""):
+        self.name = name
+        self.startup = start
+        self.effect = effect  # A function object
+        self.duration = duration
+        self.initialDuration = duration
+        self.color = color
+        self.finish = finish
+    def StartRunning(self, target):
+        self.startup(target)
+    def Run(self, target):
+        if self.duration == self.initialDuration:
+            target.statModifiers[self.name] = {
+            "Health": 0,
+            "Max Health": 0,
+            "Attack": 0,
+            "Defense": 0,
+            "Speed": 0,
+            # Add other stats as needed
+        }
+        self.duration -= 1
+        self.effect(target)
+        if self.duration <= 0:
+            self.EndStatus(self, target)
+            return True
+        return False
+    def EndStatus(self, target):
+        self.finish(target, self.targetInitStats) # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
+    def __str__(self):
+        return f"{self.color}[{self.duration} {self.name}]{TM.END} "
 def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
 
     effectiveness: int = 1

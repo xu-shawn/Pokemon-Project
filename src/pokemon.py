@@ -1,33 +1,5 @@
 from random import uniform, randint
 from moves import *
-from UIObject import *
-from moves import *
-class TextModifiers: # Stores ANSI escape sequences that change the text but its actually readable
-    BLACK = "\033[0;30m"
-    RED = "\033[0;31m"
-    GREEN = "\033[0;32m"
-    BROWN = "\033[0;33m"
-    BLUE = "\033[0;34m"
-    PURPLE = "\033[0;35m"
-    CYAN = "\033[0;36m"
-    LIGHT_GRAY = "\033[0;37m"
-    DARK_GRAY = "\033[1;30m"
-    LIGHT_RED = "\033[1;31m"
-    LIGHT_GREEN = "\033[1;32m"
-    YELLOW = "\033[1;33m"
-    LIGHT_BLUE = "\033[1;34m"
-    LIGHT_PURPLE = "\033[1;35m"
-    LIGHT_CYAN = "\033[1;36m"
-    LIGHT_WHITE = "\033[1;37m"
-    BOLD = "\033[1m"
-    FAINT = "\033[2m"
-    ITALIC = "\033[3m"
-    UNDERLINE = "\033[4m"
-    BLINK = "\033[5m"
-    NEGATIVE = "\033[7m"
-    CROSSED = "\033[9m"
-    END = "\033[0m"
-TM = TextModifiers # Alias
 def numberToBar(val, maxi, leng):
     if val / maxi < 0.3:
         d = TM.LIGHT_RED
@@ -37,37 +9,7 @@ def numberToBar(val, maxi, leng):
         d = TM.GREEN
     return d + "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
 
-class StatusEffect:
-    def __init__(self, name, start, effect, finish, duration=2, color=""):
-        self.name = name
-        self.startup = start
-        self.effect = effect  # A function object
-        self.duration = duration
-        self.initialDuration = duration
-        self.color = color
-        self.finish = finish
-    def StartRunning(self, target):
-        self.startup(target)
-    def Run(self, target):
-        if self.duration == self.initialDuration:
-            target.statModifiers[self.name] = {
-            "Health": 0,
-            "Max Health": 0,
-            "Attack": 0,
-            "Defense": 0,
-            "Speed": 0,
-            # Add other stats as needed
-        }
-        self.duration -= 1
-        self.effect(target)
-        if self.duration <= 0:
-            self.EndStatus(self, target)
-            return True
-        return False
-    def EndStatus(self, target):
-        self.finish(target, self.targetInitStats) # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
-    def __str__(self):
-        return f"{self.color}[{self.duration} {self.name}]{TM.END} "
+
 class Pokemon:
     def __init__(
         self,

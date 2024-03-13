@@ -1,9 +1,6 @@
-import os
-import time
 from pokemon import *
 import random
 from battle import battle
-from UIObject import MainUI
 from pokedex import *
 def clearScrn():
     '''
@@ -61,4 +58,3 @@ def main() -> None:
         display_battle_instructions()
         # First battle:
         battle(playerPokedex.activePokemon, random.choice(list(starters.values())))
-        
