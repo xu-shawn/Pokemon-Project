@@ -21,19 +21,28 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
 def tickFire(self):
     self.Damage(10)
     # Add to UI
+
 def tickPoison(self):
     self.Damage(10)
     # Add to UI
+
 def tickWeaken(self):
     self.attack -= 2
     self.defence -= 2
-    # Add to UI
+    self.statModifiers["Weaken"]["Attack"] += 2
+    self.statModifiers["Weaken"]["Defence"] += 2
+
 def endWeaken(self):
-    
+    self.attack += self.statModifiers["Weaken"]["Attack"]
+    self.defence += self.statModifiers["Weaken"]["Defence"]
+    self.statModifiers.remove("Weaken")
+
 def tickFrozen(self):
-    self.speed = 0 # This will 
-statusFire = StatusEffect(tickFire, lambda a : a)
-statusFire = StatusEffect(inflictFireMove)
+    self.speed = 0 # Maybe make moves fail with probability if speed is much lower than enemy speed
+
+def endFrozen(self):
+         
+statusFire = StatusEffect("Burning", tickFire, lambda a : a)
 
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
@@ -41,7 +50,8 @@ def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
 
 def inflictFireMove(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
-    other.addStatus(statusFire.deepcopy())
+    if other.checkForStatus("Burning"):
+        other.addStatus(statusFire.deepcopy())
 
 
 MOVES_DICTIONARY = {
