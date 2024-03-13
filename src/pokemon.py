@@ -1,5 +1,5 @@
 from moves import TM, MOVES_DICTIONARY
-from UIObject import MainUI
+from UIObject import MainUI, time
 
 
 def numberToBar(val, maxi, leng):
@@ -30,7 +30,7 @@ class Pokemon:
         speed: int,
         experience: int,
         description: str,
-        statuseffects: list,
+        statuseffects: list = [],
     ):
         self.name = name
         self.type = ttype  # Not using "type" because its a keyword
@@ -52,7 +52,21 @@ class Pokemon:
     @property
     def level(self):
         return int(self.experience ** (1 / 3))
-
+    def gainEXP(self, amt):
+        prevLevel = self.level
+        self.experience += amt
+        if self.level > prevLevel:
+            # Flat stat increases per level:
+            # 5 HP
+            # 5 Power
+            # 5 Defence
+            # 1 Speed
+            print(f"{self.name} gained {self.level - prevLevel} level(s)!")
+            self.maxHealth += 5 * (self.level - prevLevel)
+            self.attack += 5 * (self.level - prevLevel)
+            self.defense += 5 * (self.level - prevLevel)
+            self.speed += 1 * (self.level - prevLevel)
+            time.sleep(3)
     def getStats(self):
         """
         Gets stats as a dictionary
@@ -82,7 +96,7 @@ class Pokemon:
 
     def __str__(self):
         return (
-            f"[{self.type[0]}] {self.name} - "
+            f"[{self.type[0]}] Lv.{self.level} {self.name} - "
             + f"{numberToBar(self.health, self.maxHealth, 20)}"
             + f" {self.health}/{self.maxHealth}{TM.END} "
             + " ".join([str(x) for x in self.statusEffects])
@@ -94,7 +108,7 @@ class Pokemon:
         Heals the pokemon for the specified amount of health,
         up to a max of its maxHealth.
         """
-        self.health = max(self.health + amt, self.maxHealth)
+        self.health = min(self.health + amt, self.maxHealth)
         MainUI.addMessage(f"{TM.GREEN}{self.name} heals for {amt} health!{TM.END}")
 
     def TickStatusEffects(self):

@@ -81,9 +81,36 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
     other.TakeDamage(amount)
 
     MainUI.addMessage(f"{other.name} took {amount} damage!")
+def lifeSteal(me, other, power=0, effective=[], noteffective=[]):
+    
+    effectiveness: int = 1
+    for p in other.type:
+        if p in effective:
+            effectiveness *= 2
+            MainUI.addMessage(f"It's super effective! ({p})")
+        elif p in noteffective:
+            effectiveness *= 0.5
+            MainUI.addMessage(f"It's not very effective... ({p})")
+
+    modifier: float = (
+        uniform(0.85, 1) * effectiveness * (1 + (randint(0, 511) < me.speed))
+    )
+    MainUI.addMessage(f"Damage Modifier: x{modifier:.3f}")
+    amount = int(
+            (
+                (
+                    (2 * me.level / 5 + 2)
+                    * power * me.attack / other.defense)
+                / 50 + 2)
+            * modifier
+        )
+    other.TakeDamage(amount)
+    me.Heal(amount)
+
+    MainUI.addMessage(f"{other.name} took {amount} damage!")
 
 
-def NullFunction(self):
+def NullFunction(*anything):
     """
     A placeholder that does nothing to make the code easier to read.
     """
@@ -206,7 +233,7 @@ MOVES_DICTIONARY = {
         ["Grass", "Ice", "Bug", "Steel"],
         ["Fire", "Water", "Rock", "Dragon"],
         ["Burning"],
-        [40],
+        [60],
     ),
     "Bubble": lambda me, other: simpleDmgMove(
         me, other,
@@ -321,7 +348,7 @@ MOVES_DICTIONARY = {
         ["Grass", "Fairy"],
         ["Poison", "Ground", "Rock", "Ghost"],
         ["Poisoned"],
-        [50],
+        [70],
     ),
     "Dream Eater": lambda me, other: simpleDmgMove(
         me, other, 100, ["Fighting", "Poison"], ["Psychic", "Steel"]
@@ -342,7 +369,7 @@ MOVES_DICTIONARY = {
                                                 70,
                                                 [],
                                                 ["Rock", "Steel"]),
-    "Absorb": lambda me, other: simpleDmgMove(
+    "Absorb": lambda me, other: lifeSteal(
         me,
         other,
         20,
@@ -362,7 +389,7 @@ MOVES_DICTIONARY = {
         ["Grass", "Psychic", "Dark"],
         ["Fire", "Fighting", "Poison", "Flying", "Ghost", "Steel", "Fairy"],
     ),
-    "Draining Kiss": lambda me, other: simpleDmgMove(
+    "Draining Kiss": lambda me, other: lifeSteal(
         me, other, 50,
         ["Fighting", "Dragon", "Dark"],
         ["Fire", "Poison", "Steel"]
@@ -371,6 +398,9 @@ MOVES_DICTIONARY = {
         me, other, 80, ["Psychic", "Ghost"], ["Dark"]
     ),
     "Spread Covid": lambda me, other: inflictEverything(
-        me, other, 0, [], []
+        me, other, 1, [], []
     ),  # This is a test move because lmao ha ha
+    "P A I N": lambda me, other: simpleDmgMove(
+        me, other, 100000, [], []
+    )
 }
