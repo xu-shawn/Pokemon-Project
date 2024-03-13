@@ -2,6 +2,7 @@ class Pokedex:
     def __init__(self):
         self.collection = {}
         self.activePokemon = None
+
     def add_pokemon(self, pokemon):
         """
         Adds a Pokémon to the Pokédex.
