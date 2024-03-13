@@ -1,9 +1,19 @@
 from UIObject import *
 from random import uniform, randint
 from copy import deepcopy
+from typing import Callable
+
 
 class StatusEffect:
-    def __init__(self, name, start, effect, finish, duration=2, color=""):
+    def __init__(
+        self,
+        name: str,
+        start: Callable,
+        effect: Callable,
+        finish: Callable,
+        duration: int = 2,
+        color: str = "",
+    ):
         self.name = name
         self.startup = start
         self.effect = effect  # A function object
@@ -14,12 +24,12 @@ class StatusEffect:
 
     def StartRunning(self, target):
         target.statModifiers[self.name] = {
-                "Health": 0,
-                "Max Health": 0,
-                "Attack": 0,
-                "Defense": 0,
-                "Speed": 0,
-                # Add other stats as needed
+            "Health": 0,
+            "Max Health": 0,
+            "Attack": 0,
+            "Defense": 0,
+            "Speed": 0,
+            # Add other stats as needed
         }
         self.startup(target)
 
@@ -36,6 +46,7 @@ class StatusEffect:
             target
         )  # WARNING: THIS WILL GO BAD IF MULTIPLE EFFECTS CHANGE THE SAME STATS
         del target.statModifiers[self.name]
+
     def __str__(self):
         return f"{self.color}[{self.duration} {self.name}]{TM.END} "
 
@@ -53,7 +64,12 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
         uniform(0.85, 1) * effectiveness * (1 + (randint(0, 511) < me.speed))
     )
 
-    other.TakeDamage(int((((2 * me.level / 5 + 2) * power * me.attack / other.defense) / 50 + 2) * modifier))
+    other.TakeDamage(
+        int(
+            (((2 * me.level / 5 + 2) * power * me.attack / other.defense) / 50 + 2)
+            * modifier
+        )
+    )
 
     # Add to UI
 
@@ -103,22 +119,23 @@ def endFrozen(self):
     self.speed += self.statModifiers["Frozen"]["Speed"]
     MainUI.addMessage(f"{TM.LIGHT_CYAN}{self.name} has thawed out.{TM.END}")
 
-statusEffectDictionary = {"Burning":StatusEffect(
-    "Burning", NullFunction, tickFire, NullFunction, 3, TM.LIGHT_RED
-),
-"Frozen": StatusEffect(
-    "Frozen", startFrozen, NullFunction, endFrozen, 2, TM.LIGHT_CYAN
-),
 
-"Poisoned": StatusEffect(
-    "Poisoned", NullFunction, tickPoison, NullFunction, 3, TM.LIGHT_PURPLE
-),
-
-"Weakened": StatusEffect(
-    "Weakened", NullFunction, tickWeaken, endWeaken, 3, TM.LIGHT_GRAY
-)
-
+statusEffectDictionary = {
+    "Burning": StatusEffect(
+        "Burning", NullFunction, tickFire, NullFunction, 3, TM.LIGHT_RED
+    ),
+    "Frozen": StatusEffect(
+        "Frozen", startFrozen, NullFunction, endFrozen, 2, TM.LIGHT_CYAN
+    ),
+    "Poisoned": StatusEffect(
+        "Poisoned", NullFunction, tickPoison, NullFunction, 3, TM.LIGHT_PURPLE
+    ),
+    "Weakened": StatusEffect(
+        "Weakened", NullFunction, tickWeaken, endWeaken, 3, TM.LIGHT_GRAY
+    ),
 }
+
+
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
     inflictStatusEffectMove(
         self,
@@ -127,7 +144,7 @@ def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
         effective,
         noteffective,
         ["Burning", "Frozen", "Poisoned", "Weakened"],
-        [100, 100, 100, 100]
+        [100, 100, 100, 100],
     )
 
 
@@ -141,7 +158,9 @@ def inflictStatusEffectMove(
             if not other.checkForStatus(
                 effect
             ):  # Do not give the pokemon the same effect multiple times. However, do reset the timer.
-                other.addStatus(deepcopy(statusEffectDictionary[effect]))  # TODO: Reset the timer
+                other.addStatus(
+                    deepcopy(statusEffectDictionary[effect])
+                )  # TODO: Reset the timer
         index += 1
 
 
@@ -159,7 +178,8 @@ MOVES_DICTIONARY = {
         40,
         ["Grass", "Ice", "Bug", "Steel"],
         ["Fire", "Water", "Rock", "Dragon"],
-        ["Burning"], [20]
+        ["Burning"],
+        [20],
     ),
     "Fire Spin": lambda me, other: inflictStatusEffectMove(
         me,
@@ -167,7 +187,8 @@ MOVES_DICTIONARY = {
         35,
         ["Grass", "Ice", "Bug", "Steel"],
         ["Fire", "Water", "Rock", "Dragon"],
-        ["Burning"], [40]
+        ["Burning"],
+        [40],
     ),
     "Bubble": lambda me, other: simpleDmgMove(
         me, other, 40, ["Fire", "Ground", "Rock"], ["Water", "Grass", "Dragon"]
@@ -201,7 +222,8 @@ MOVES_DICTIONARY = {
         40,
         ["Grass", "Ground", "Flying", "Dragon"],
         ["Fire", "Water", "Ice", "Steel"],
-        ["Frozen"],[10]
+        ["Frozen"],
+        [10],
     ),
     "Double Kick": lambda me, other: simpleDmgMove(
         me,
@@ -224,8 +246,7 @@ MOVES_DICTIONARY = {
         me, other, 35, ["Grass", "Fighting", "Bug"], ["Electric", "Rock", "Steel"]
     ),
     "Confusion": lambda me, other: inflictStatusEffectMove(
-        me, other, 50, ["Fighting", "Poison"], ["Psychic", "Steel"],
-        ["Weakened"], [100]
+        me, other, 50, ["Fighting", "Poison"], ["Psychic", "Steel"], ["Weakened"], [100]
     ),
     "Twineedle": lambda me, other: simpleDmgMove(
         me,
@@ -241,8 +262,7 @@ MOVES_DICTIONARY = {
         me, other, 75, ["Fire", "Ice", "Flying", "Bug"], ["Fighting", "Ground", "Steel"]
     ),
     "Lick": lambda me, other: inflictStatusEffectMove(
-        me, other, 30, ["Psychic", "Ghost"], ["Dark"],
-        ["Weakened"], [50]
+        me, other, 30, ["Psychic", "Ghost"], ["Dark"], ["Weakened"], [50]
     ),
     "Outrage": lambda me, other: simpleDmgMove(me, other, 120, ["Dragon"], ["Steel"]),
     "Crunch": lambda me, other: simpleDmgMove(
@@ -255,8 +275,13 @@ MOVES_DICTIONARY = {
         me, other, 80, ["Ice", "Rock", "Fairy"], ["Fire", "Water", "Electric", "Steel"]
     ),
     "Smog": lambda me, other: inflictStatusEffectMove(
-        me, other, 30, ["Grass", "Fairy"], ["Poison", "Ground", "Rock", "Ghost"],
-        ["Poisoned"], [50]
+        me,
+        other,
+        30,
+        ["Grass", "Fairy"],
+        ["Poison", "Ground", "Rock", "Ghost"],
+        ["Poisoned"],
+        [50],
     ),
     "Dream Eater": lambda me, other: simpleDmgMove(
         me, other, 100, ["Fighting", "Poison"], ["Psychic", "Steel"]
