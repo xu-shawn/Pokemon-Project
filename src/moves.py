@@ -44,7 +44,7 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
         uniform(0.85, 1) * effectiveness * (1 + (randint(0, 511) < me.speed))
     )
 
-    other.Damage((2 * me.level / 5 + 2) * power * me.attack / me.defense)
+    other.TakeDamage((2 * me.level / 5 + 2) * power * me.attack / me.defense)
 
     # Add to UI
 def NullFunction(self):
@@ -54,36 +54,39 @@ def NullFunction(self):
     return None
 
 def tickFire(self):
-    self.Damage(10)
-    # Add to UI
+    self.TakeDamage(10)
+    MainUI.addMessage(f"{TM.LIGHT_RED}{self.name} took 10 points of FIRE damage!{TM.END}")
 
 def tickPoison(self):
-    self.Damage(10)
-    # Add to UI
+    self.TakeDamage(10)
+    MainUI.addMessage(f"{TM.LIGHT_PURPLE}{self.name} took 10 points of POISON damage!{TM.END}")
 
 def tickWeaken(self):
     self.attack -= 2
     self.defence -= 2
     self.statModifiers["Weaken"]["Attack"] += 2
     self.statModifiers["Weaken"]["Defence"] += 2
-
+    MainUI.addMessage(f"{TM.LIGHT_GRAY}{self.name} was weakened...{TM.END}")
 def endWeaken(self):
     self.attack += self.statModifiers["Weaken"]["Attack"]
     self.defence += self.statModifiers["Weaken"]["Defence"]
+    MainUI.addMessage(f"{TM.LIGHT_GRAY}{self.name} is back to full strength!{TM.END}")
     self.statModifiers.remove("Weaken")
 
 def startFrozen(self):
     self.statModifiers["Frozen"]["Speed"] = self.speed
     self.speed = 0 # Maybe make moves fail with probability if speed is much lower than enemy speed
+    MainUI.addMessage(f"{TM.LIGHT_CYAN}{self.name} is FROZEN!{TM.END}")
 
 def endFrozen(self):
     self.speed += self.statModifiers["Frozen"]["Speed"]
     self.statModifiers.remove("Frozen")
+    MainUI.addMessage(f"{TM.LIGHT_CYAN}{self.name} has thawed out.{TM.END}")
 
-statusFire = StatusEffect("Burning", NullFunction, tickFire, NullFunction, TM.LIGHT_RED)
-statusFrozen = StatusEffect("Frozen", startFrozen, NullFunction, endFrozen, TM.LIGHT_CYAN)
-statusPoison = StatusEffect("Poisoned", NullFunction, tickPoison, NullFunction, TM.LIGHT_PURPLE)
-statusWeaken = StatusEffect("Weakened", NullFunction, tickWeaken, endWeaken, TM.LIGHT_GRAY)
+statusFire = StatusEffect("Burning", NullFunction, tickFire, NullFunction, 3, TM.LIGHT_RED)
+statusFrozen = StatusEffect("Frozen", startFrozen, NullFunction, endFrozen, 2, TM.LIGHT_CYAN)
+statusPoison = StatusEffect("Poisoned", NullFunction, tickPoison, NullFunction, 3, TM.LIGHT_PURPLE)
+statusWeaken = StatusEffect("Weakened", NullFunction, tickWeaken, endWeaken, 3, TM.LIGHT_GRAY)
 
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
     inflictStatusEffectMove(self, other, power, effective, noteffective, ["Burning", "Frozen", "Poisoned", "Weakened"])

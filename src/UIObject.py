@@ -37,19 +37,24 @@ class UI:
         self.ours = p1
         self.other = p2
         self.messages = []
+    def addMessage(self, add):
+        self.messages.append(add)
     def resetPokemon(self, p1, p2):
         self.ours = p1
         self.other = p2
     def ResetUI(self):
-        os.run("cls")
+        if os.name == 'nt':
+            os.system("cls")
+        else:
+            os.system('clear')
+        print("Your pokemon:")
         print(str(self.ours))
+        print("Their pokemon:")
         print(str(self.other))
         print()
         for x in self.messages:
             print(x)
         self.messages = []
         dramaticPause()
-    def addMessage(self, add):
-        self.messages += add
 global MainUI
 MainUI = UI(None, None)

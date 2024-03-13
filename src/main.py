@@ -33,10 +33,10 @@ def choose_starter():
     return choice
 
 def display_battle_instructions():
-    print("Now that you have your Pokémon, you're ready to battle.")
-    print("During a battle, you can choose a move for your Pokémon to use.")
-    print("Each move has different effects, so choose wisely.")
-    print("Type the number associated with the move to choose it.")
+    MainUI.addMessage("Now that you have your Pokémon, you're ready to battle.")
+    MainUI.addMessage("During a battle, you can choose a move for your Pokémon to use.")
+    MainUI.addMessage("Each move has different effects, so choose wisely.")
+    MainUI.addMessage("Type the number associated with the move to choose it.")
 
 def choose_move(moves): # Function retired, moved to battle.py
     pass
@@ -55,6 +55,7 @@ def main() -> None:
     starter_name = choose_starter()
     starterPokemon = starters[starter_name]
     playerPokedex.add_pokemon(starterPokemon)
+    del starters[starter_name]
     display_battle_instructions()
     # First battle:
     battle(playerPokedex.activePokemon, random.choice(list(starters.values())))

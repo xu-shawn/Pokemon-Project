@@ -7,7 +7,7 @@ def numberToBar(val, maxi, leng):
         d = TM.YELLOW
     else:
         d = TM.GREEN
-    return d + "[" + "█" * int((val / maxi) * leng) + "░" * (leng - int((val / maxi) * leng)) + "]"
+    return d + "[" + "|" * int((val / maxi) * leng) + " " * (leng - int((val / maxi) * leng)) + "]"
 
 
 class Pokemon:
@@ -74,13 +74,12 @@ class Pokemon:
     def TakeDamage(self, dmg):
         '''
         Damages the pokemon for the specified amount.
-        DOES NOT do the calculation.
+        DOES NOT do the calculation, and DOES NOT check for faints.
         '''
         self.health -= dmg
-        if self.health <= 0:
-            pass # lol idk
+        MainUI.addMessage(f"{self.name} took {dmg} damage!")
     def __str__(self):
-        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 10)} {self.health}/{self.maxHealth}{TM.END}" + ' '.join([str(x) for x in self.statusEffects])
+        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 20)} {self.health}/{self.maxHealth}{TM.END}" + ' '.join([str(x) for x in self.statusEffects])
 
     def Heal(self, amt):
         '''
