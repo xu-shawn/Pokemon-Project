@@ -4,7 +4,10 @@ from battle import battle
 from pokedex import Pokedex
 import os
 import time
-
+# TODO: FIX MAIN GAME LOOP
+# TODO: ADD MORE POKEMON
+# TODO: FIX BATTLE LOOP
+# REMEMBER TO LINT BEFORE TURNING IN
 
 def clearScrn():
     """
