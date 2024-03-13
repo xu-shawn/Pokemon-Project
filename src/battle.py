@@ -41,6 +41,7 @@ def requestMove(player, UI):
     UI.addMessage(f"{player.Name} used {selectedMove}") # Could also make UIOBJ global
     return selectedMove
 def battle(playerPokemon, enemyPokemon):
+    global UIOBJ
     UIOBJ = UI(playerPokemon, enemyPokemon)
     # Here we go.
     # Start with the intro.
@@ -60,7 +61,7 @@ def battle(playerPokemon, enemyPokemon):
         # 5. Print out UI (again), with messages.
 
         # 5.5. Tick status effects for AI
-
+        enemyPokemon.TickStatusEffects()
         # 6. Have AI use a random move.
 
         # 7. Print out UI (again again), with messages.

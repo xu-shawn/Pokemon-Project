@@ -58,12 +58,12 @@ statusWeaken = StatusEffect("Weakened", NullFunction, tickWeaken, endWeaken)
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
     # WORK IN PROGRESS LOL
-def inflictFireMove(self, other, power=0, effective=[], noteffective=[]):
+def inflictStatusEffectMove(self, other, power=0, effective=[], noteffective=[], effects=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
-    if other.checkForStatus("Burning"):
-        other.addStatus(statusFire.deepcopy())
-
-
+    for effect in effects:
+        if not other.checkForStatus(effect): # Do not give the pokemon the same effect multiple times. However, do reset the timer.
+            other.addStatus(statusFire.deepcopy()) # TODO: Reset the timer
+            other.statusEffects.get()
 MOVES_DICTIONARY = {
     "Scratch": lambda me, other: simpleDmgMove(
         me, other, 40, [], ["Rock", "Steel"]
