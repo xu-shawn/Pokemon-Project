@@ -40,8 +40,7 @@ def choose_starter():
     choice = input("Your choice: ").capitalize()
     while choice not in starters:
         print(
-            """That's not a valid starter Pokémon.
-             Please choose Bulbasaur, Charmander, or Squirtle."""
+            "That's not a valid starter Pokémon. Please choose Bulbasaur, Charmander, or Squirtle."
         )
         choice = input("Your choice: ").capitalize()
 
@@ -54,13 +53,18 @@ def display_battle_instructions():
     print("During a battle, you can choose a move for your Pokémon to use.")
     print("Each move has different effects, so choose wisely.")
     print("Type the number associated with the move to choose it.")
-
+    time.sleep(3)
 
 def explore_and_battle(player_pokedex):
     wild_pokemon = random.choice(list(starters.values()))
-    MainUI.addMessage(f"\nA wild {wild_pokemon.name} appears!")
-    battle(player_pokedex.active_pokemon, wild_pokemon)
-
+    MainUI.addMessage(f"A wild {wild_pokemon.name} appears!")
+    while not player_pokedex.defeated:
+        battle(player_pokedex.active_pokemon, wild_pokemon)
+        if wild_pokemon.health <= 0:
+            break
+        player_pokedex.fainted()
+    if not player_pokedex.defeated:
+        capture_attempt(player_pokedex, wild_pokemon)
 
 def capture_attempt(player_pokedex, wild_pokemon):
     # Simplified capture mechanic
@@ -124,13 +128,17 @@ def main():
     player_pokedex = Pokedex()
     player_pokedex.add_pokemon(starterPokemon)
     del starters[starter_name]
-    time.sleep(3)
+    time.sleep(2)
     display_battle_instructions()
 
-    for _ in range(3):
+    while not player_pokedex.defeated:
         explore_and_battle(player_pokedex)
-        capture_attempt(player_pokedex, player_pokedex.active_pokemon)
-
+        print("Between battles, all of your pokemon are healed for half of their max HP.")
+        print("This does not include status effects, however.")
+        time.sleep(3)
+        player_pokedex.healPokemon()
+        time.sleep(2)
+    print("All of your pokemon have fainted, thats the end of the game. GG")
 
 if __name__ == "__main__":
     main()

@@ -95,8 +95,7 @@ class Pokemon:
         up to a max of its maxHealth.
         """
         self.health = max(self.health + amt, self.maxHealth)
-        MainUI.addMessage(f"{TM.GREEN}{self.name}"
-                          + f"heals for {amt} health!{TM.END}")
+        MainUI.addMessage(f"{TM.GREEN}{self.name} heals for {amt} health!{TM.END}")
 
     def TickStatusEffects(self):
         """
@@ -111,6 +110,7 @@ class Pokemon:
         for status in self.statusEffects:
             status.Run(self)
         self.statusEffects = [x for x in self.statusEffects if not x.duration <= 0]
+
     def addStatus(self, status):
         """
         addStatus(status)
