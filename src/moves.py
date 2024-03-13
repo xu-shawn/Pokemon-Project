@@ -17,6 +17,11 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
     other.Damage((2 * me.level / 5 + 2) * power * me.attack / me.defense)
 
     # Add to UI
+def NullFunction(self):
+    '''
+    A placeholder that does nothing to make the code easier to read.
+    '''
+    return None
 
 def tickFire(self):
     self.Damage(10)
@@ -37,17 +42,22 @@ def endWeaken(self):
     self.defence += self.statModifiers["Weaken"]["Defence"]
     self.statModifiers.remove("Weaken")
 
-def tickFrozen(self):
+def startFrozen(self):
+    self.statModifiers["Frozen"]["Speed"] = self.speed
     self.speed = 0 # Maybe make moves fail with probability if speed is much lower than enemy speed
 
 def endFrozen(self):
-         
-statusFire = StatusEffect("Burning", tickFire, lambda a : a)
+    self.speed += self.statModifiers["Frozen"]["Speed"]
+    self.statModifiers.remove("Frozen")
+
+statusFire = StatusEffect("Burning", NullFunction, tickFire, NullFunction)
+statusFrozen = StatusEffect("Frozen", startFrozen, NullFunction, endFrozen)
+statusPoison = StatusEffect("Poisoned", NullFunction, tickPoison, NullFunction)
+statusWeaken = StatusEffect("Weakened", NullFunction, tickWeaken, endWeaken)
 
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
-
-
+    # WORK IN PROGRESS LOL
 def inflictFireMove(self, other, power=0, effective=[], noteffective=[]):
     simpleDmgMove(self, other, power, effective, noteffective)
     if other.checkForStatus("Burning"):
