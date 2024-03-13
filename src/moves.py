@@ -106,21 +106,22 @@ def endFrozen(self):
     self.statModifiers.remove("Frozen")
     MainUI.addMessage(f"{TM.LIGHT_CYAN}{self.name} has thawed out.{TM.END}")
 
-
-statusFire = StatusEffect(
+statusEffectDictionary = {"Burning":StatusEffect(
     "Burning", NullFunction, tickFire, NullFunction, 3, TM.LIGHT_RED
-)
-statusFrozen = StatusEffect(
+),
+"Frozen": StatusEffect(
     "Frozen", startFrozen, NullFunction, endFrozen, 2, TM.LIGHT_CYAN
-)
-statusPoison = StatusEffect(
+),
+
+"Poisoned": StatusEffect(
     "Poisoned", NullFunction, tickPoison, NullFunction, 3, TM.LIGHT_PURPLE
-)
-statusWeaken = StatusEffect(
+),
+
+"Weakened": StatusEffect(
     "Weakened", NullFunction, tickWeaken, endWeaken, 3, TM.LIGHT_GRAY
 )
 
-
+}
 def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
     inflictStatusEffectMove(
         self,
@@ -129,19 +130,23 @@ def inflictEverything(self, other, power=0, effective=[], noteffective=[]):
         effective,
         noteffective,
         ["Burning", "Frozen", "Poisoned", "Weakened"],
+        100
     )
 
 
 def inflictStatusEffectMove(
-    self, other, power=0, effective=[], noteffective=[], effects=[]
+    self, other, power=0, effective=[], noteffective=[], effects=[], probability=[0]
 ):
     simpleDmgMove(self, other, power, effective, noteffective)
+    index = 0
     for effect in effects:
-        if not other.checkForStatus(
-            effect
-        ):  # Do not give the pokemon the same effect multiple times. However, do reset the timer.
-            other.addStatus(statusFire.deepcopy())  # TODO: Reset the timer
-            other.statusEffects.get()
+        if randint(1, 100) < probability[index]:
+            if not other.checkForStatus(
+                effect
+            ):  # Do not give the pokemon the same effect multiple times. However, do reset the timer.
+                other.addStatus(statusEffectDictionary[effect].deepcopy())  # TODO: Reset the timer
+                other.statusEffects.get()
+        index += 1
 
 
 MOVES_DICTIONARY = {
@@ -152,19 +157,21 @@ MOVES_DICTIONARY = {
     "Fury Attack": lambda me, other: simpleDmgMove(
         me, other, 15, [], ["Rock", "Steel"]
     ),
-    "Ember": lambda me, other: simpleDmgMove(
+    "Ember": lambda me, other: inflictStatusEffectMove(
         me,
         other,
         40,
         ["Grass", "Ice", "Bug", "Steel"],
         ["Fire", "Water", "Rock", "Dragon"],
+        ["Burning"], [20]
     ),
-    "Fire Spin": lambda me, other: simpleDmgMove(
+    "Fire Spin": lambda me, other: inflictStatusEffectMove(
         me,
         other,
         35,
         ["Grass", "Ice", "Bug", "Steel"],
         ["Fire", "Water", "Rock", "Dragon"],
+        ["Burning"], [40]
     ),
     "Bubble": lambda me, other: simpleDmgMove(
         me, other, 40, ["Fire", "Ground", "Rock"], ["Water", "Grass", "Dragon"]
@@ -192,17 +199,18 @@ MOVES_DICTIONARY = {
         ["Water", "Ground", "Rock"],
         ["Fire", "Grass", "Poison", "Flying", "Bug", "Dragon", "Steel"],
     ),
-    "Ice Shard": lambda me, other: simpleDmgMove(
+    "Ice Shard": lambda me, other: inflictStatusEffectMove(
         me,
         other,
         40,
         ["Grass", "Ground", "Flying", "Dragon"],
         ["Fire", "Water", "Ice", "Steel"],
+        ["Frozen"],[10]
     ),
     "Double Kick": lambda me, other: simpleDmgMove(
         me,
         other,
-        30,
+        60,
         ["Normal", "Ice", "Rock", "Dark", "Steel"],
         ["Poison", "Flying", "Psychic", "Bug", "Fairy"],
     ),
@@ -219,8 +227,9 @@ MOVES_DICTIONARY = {
     "Peck": lambda me, other: simpleDmgMove(
         me, other, 35, ["Grass", "Fighting", "Bug"], ["Electric", "Rock", "Steel"]
     ),
-    "Confusion": lambda me, other: simpleDmgMove(
+    "Confusion": lambda me, other: inflictStatusEffectMove(
         me, other, 50, ["Fighting", "Poison"], ["Psychic", "Steel"]
+        ["Weakened"], [100]
     ),
     "Twineedle": lambda me, other: simpleDmgMove(
         me,
@@ -235,8 +244,9 @@ MOVES_DICTIONARY = {
     "Rock Slide": lambda me, other: simpleDmgMove(
         me, other, 75, ["Fire", "Ice", "Flying", "Bug"], ["Fighting", "Ground", "Steel"]
     ),
-    "Lick": lambda me, other: simpleDmgMove(
-        me, other, 30, ["Psychic", "Ghost"], ["Dark"]
+    "Lick": lambda me, other: inflictStatusEffectMove(
+        me, other, 30, ["Psychic", "Ghost"], ["Dark"],
+        ["Weakened"], [50]
     ),
     "Outrage": lambda me, other: simpleDmgMove(me, other, 120, ["Dragon"], ["Steel"]),
     "Crunch": lambda me, other: simpleDmgMove(
@@ -248,8 +258,9 @@ MOVES_DICTIONARY = {
     "Flash Cannon": lambda me, other: simpleDmgMove(
         me, other, 80, ["Ice", "Rock", "Fairy"], ["Fire", "Water", "Electric", "Steel"]
     ),
-    "Smog": lambda me, other: simpleDmgMove(
-        me, other, 30, ["Grass", "Fairy"], ["Poison", "Ground", "Rock", "Ghost"]
+    "Smog": lambda me, other: inflictStatusEffectMove(
+        me, other, 30, ["Grass", "Fairy"], ["Poison", "Ground", "Rock", "Ghost"],
+        ["Poisoned"], [50]
     ),
     "Dream Eater": lambda me, other: simpleDmgMove(
         me, other, 100, ["Fighting", "Poison"], ["Psychic", "Steel"]
