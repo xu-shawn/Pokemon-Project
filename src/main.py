@@ -40,6 +40,7 @@ def display_battle_instructions():
 
 def choose_move(moves): # Function retired, moved to battle.py
     pass
+
 starters = {"Bulbasaur":Pokemon("Bulbasaur", ["Grass"], 100, ["Scratch", "Tackle", "Vine Whip"]
                                 , 20, 20, 25, 0, "A Bulbasaur. What else is there to say?", []),
             "Charmander":Pokemon("Charmander", ["Fire"], 80, ["Scratch", "Tackle", "Ember"]
@@ -48,13 +49,15 @@ starters = {"Bulbasaur":Pokemon("Bulbasaur", ["Grass"], 100, ["Scratch", "Tackle
                                 , 15, 25, 20, 0, "A Squirtle. What else is there to say?", [])}
 
 def main() -> None:
-    if __name__ == "__main__":
-        # Initialize Player Pokedex
-        playerPokedex = Pokedex()
-        display_welcome()
-        starter_name = choose_starter()
-        starterPokemon = starters[starter_name]
-        playerPokedex.add_pokemon(starterPokemon)
-        display_battle_instructions()
-        # First battle:
-        battle(playerPokedex.activePokemon, random.choice(list(starters.values())))
+    # Initialize Player Pokedex
+    playerPokedex = Pokedex()
+    display_welcome()
+    starter_name = choose_starter()
+    starterPokemon = starters[starter_name]
+    playerPokedex.add_pokemon(starterPokemon)
+    display_battle_instructions()
+    # First battle:
+    battle(playerPokedex.activePokemon, random.choice(list(starters.values())))
+
+if __name__ == "__main__":
+    main()    
