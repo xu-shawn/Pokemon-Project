@@ -50,8 +50,9 @@ def battle(playerPokemon, enemyPokemon):
         # 6. Have AI use a random move.
         if enemyPokemon.health > 0:
             the = choice(enemyPokemon.moves)
-            enemyPokemon.useMove(the, playerPokemon)
             MainUI.addMessage(f"{enemyPokemon.name} used {the}")
+            enemyPokemon.useMove(the, playerPokemon)
         # 7. Print out UI (again again), with messages.
         MainUI.ResetUI()
         # 8. Loop.
+    MainUI.ResetUI()

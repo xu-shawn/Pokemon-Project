@@ -32,6 +32,7 @@ class StatusEffect:
             "Speed": 0,
             # Add other stats as needed
         }
+        MainUI.addMessage(f"{target.name} is {self.color}{self.name.upper()}{TM.END}!")
         self.startup(target)
 
     def Run(self, target):
@@ -43,12 +44,12 @@ class StatusEffect:
         return False
 
     def EndStatus(self, target):
-        self.finish(
-            target
-        )
-        # WARNING: THIS WILL GO BAD
-        # IF MULTIPLE EFFECTS CHANGE THE SAME STATS
-        del target.statModifiers[self.name]
+        self.finish(target)
+        # Hopefully, removing the status from the list
+        # will cause Python to recognize the status
+        # as unused and remove it. If not, uh,
+        # memory leaks!
+        # del target.statModifiers[self.name]
 
     def __str__(self):
         return f"{self.color}[{self.duration} {self.name}]{TM.END} "
@@ -57,18 +58,19 @@ class StatusEffect:
 def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
 
     effectiveness: int = 1
-
-    if other.type in effective:
-        effectiveness = 2
-    elif other.type in noteffective:
-        effectiveness = 0.5
+    for p in other.type:
+        if p in effective:
+            effectiveness *= 2
+            MainUI.addMessage(f"It's super effective! ({p})")
+        elif p in noteffective:
+            effectiveness *= 0.5
+            MainUI.addMessage(f"It's not very effective... ({p})")
 
     modifier: float = (
         uniform(0.85, 1) * effectiveness * (1 + (randint(0, 511) < me.speed))
     )
-
-    other.TakeDamage(
-        int(
+    MainUI.addMessage(f"Damage Modifier: x{modifier:.3f}")
+    amount = int(
             (
                 (
                     (2 * me.level / 5 + 2)
@@ -76,9 +78,9 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
                 / 50 + 2)
             * modifier
         )
-    )
+    other.TakeDamage(amount)
 
-    # Add to UI
+    MainUI.addMessage(f"{other.name} took {amount} damage!")
 
 
 def NullFunction(self):
@@ -122,7 +124,6 @@ def startFrozen(self):
     self.speed = 0
     # Maybe make moves fail with probability
     # if speed is much lower than enemy speed
-    MU.addMessage(f"{TM.LIGHT_CYAN}{self.name} is FROZEN!{TM.END}")
 
 
 def endFrozen(self):
@@ -141,7 +142,7 @@ statusEffectDictionary = {
         "Poisoned", NullFunction, tickPoison, NullFunction, 3, TM.LIGHT_PURPLE
     ),
     "Weakened": StatusEffect(
-        "Weakened", NullFunction, tickWeaken, endWeaken, 3, TM.LIGHT_GRAY
+        "Weakened", NullFunction, tickWeaken, endWeaken, 5, TM.LIGHT_GRAY
     ),
 }
 

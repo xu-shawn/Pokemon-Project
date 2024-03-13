@@ -1,6 +1,6 @@
 from pokemon import Pokemon
 import random
-from battle import battle
+from battle import battle, MainUI
 from pokedex import Pokedex
 import os
 import time
@@ -58,7 +58,7 @@ def display_battle_instructions():
 
 def explore_and_battle(player_pokedex):
     wild_pokemon = random.choice(list(starters.values()))
-    print(f"\nA wild {wild_pokemon.name} appears!")
+    MainUI.addMessage(f"\nA wild {wild_pokemon.name} appears!")
     battle(player_pokedex.active_pokemon, wild_pokemon)
 
 
@@ -93,7 +93,7 @@ starters = {
         "Charmander",
         ["Fire"],
         17,
-        # Includes test move to test status effects
+        # NOTE: STACKED STATUS EFFECTS DOES BREAK...
         ["Scratch", "Tackle", "Ember", "Spread Covid"],
         25,
         15,
