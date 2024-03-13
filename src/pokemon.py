@@ -73,16 +73,6 @@ class Pokemon:
     def fight(self, other: "Pokemon"):
         pass
 
-    def calculate_damage(self, ttype: int, power: int):
-        """
-        calculate_damage(ttype, power)
-        Calculates the amount of damage to deal based off type diff between pokemon and power of the move. Wait, shouldnt this be a global function not class method?
-        """
-        modifier: float = (
-            uniform(0.85, 1) * ttype * (1 + (randint(0, 511) < self.speed))
-        )
-        return int((2 * self.level / 5 + 2) * power * self.attack / self.defense)
-
     def TakeDamage(self, dmg):
         """
         Damages the pokemon for the specified amount.
@@ -90,8 +80,12 @@ class Pokemon:
         """
         self.health -= dmg
         MainUI.addMessage(f"{self.name} took {dmg} damage!")
+
     def __str__(self):
-        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 20)} {self.health}/{self.maxHealth}{TM.END}" + ' '.join([str(x) for x in self.statusEffects])
+        return (
+            f"{self.name} - {numberToBar(self.health, self.maxHealth, 20)} {self.health}/{self.maxHealth}{TM.END}"
+            + " ".join([str(x) for x in self.statusEffects])
+        )
 
     def Heal(self, amt):
         """
