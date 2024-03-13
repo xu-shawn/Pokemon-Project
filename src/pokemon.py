@@ -70,9 +70,6 @@ class Pokemon:
             "Status Effects": self.statusEffects,
         }
 
-    def fight(self, other: "Pokemon"):
-        pass
-
     def TakeDamage(self, dmg):
         """
         Damages the pokemon for the specified amount.
