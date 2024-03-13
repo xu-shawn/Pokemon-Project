@@ -70,15 +70,13 @@ class Pokemon:
             "Status Effects": self.statusEffects,
         }
 
-    def fight(self, other: "Pokemon"):
-        pass
-
     def TakeDamage(self, dmg):
         """
         Damages the pokemon for the specified amount.
         DOES NOT do the calculation, and DOES NOT check for faints.
         """
         self.health -= dmg
+        self.health = max(self.health, 0)
         MainUI.addMessage(f"{self.name} took {dmg} damage!")
 
     def __str__(self):
