@@ -121,7 +121,7 @@ def main():
 
     for _ in range(3):
         explore_and_battle(player_pokedex)
-        capture_attempt(player_pokedex, player_pokedex.activePokemon)
+        capture_attempt(player_pokedex, player_pokedex.active_pokemon)
 
 
 if __name__ == "__main__":
