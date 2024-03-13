@@ -73,7 +73,7 @@ starters = {
     "Bulbasaur": Pokemon(
         "Bulbasaur",
         ["Grass"],
-        2000, # INFLATED HEALTH IS FOR TESTING
+        20, # INFLATED HEALTH IS FOR TESTING
         ["Scratch", "Tackle", "Vine Whip"],
         20,
         20,
@@ -97,7 +97,7 @@ starters = {
     "Squirtle": Pokemon(
         "Squirtle",
         ["Water"],
-        2300,
+        23,
         ["Scratch", "Tackle", "Bubble"],
         15,
         25,

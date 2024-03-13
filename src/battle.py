@@ -39,13 +39,19 @@ def battle(playerPokemon, enemyPokemon):
         toUse = requestMove(playerPokemon)
         # 4. Use move.
         playerPokemon.useMove(toUse, enemyPokemon)
+        if enemyPokemon.Health <= 0:
+            break
         # 5. Print out UI (again), with messages.
         MainUI.ResetUI()
         # 5.5. Tick status effects for AI
         enemyPokemon.TickStatusEffects()
+        if enemyPokemon.Health <= 0:
+            break
         # 6. Have AI use a random move.
         if enemyPokemon.health > 0:
-            enemyPokemon.useMove(choice(enemyPokemon.moves), playerPokemon)
+            the = choice(enemyPokemon.moves)
+            enemyPokemon.useMove(the, playerPokemon)
+            MainUI.addMessage(f"{enemyPokemon.name} used {the}")
         # 7. Print out UI (again again), with messages.
         MainUI.ResetUI()
         # 8. Loop.
