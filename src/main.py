@@ -22,7 +22,7 @@ def display_welcome():
     print("Welcome to the Pokémon Adventure!")
     print(
         """In this game, you will choose a starter
-         Pokémon to battle against wild Pokémon."""
+Pokémon to battle against wild Pokémon."""
     )
     print("You can capture Pokémon by defeating them in battles.")
     print("Let's start by choosing your first Pokémon!")
