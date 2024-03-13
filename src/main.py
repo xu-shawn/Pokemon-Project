@@ -57,7 +57,7 @@ starters = {
     "Bulbasaur": Pokemon(
         "Bulbasaur",
         ["Grass"],
-        100,
+        20,
         ["Scratch", "Tackle", "Vine Whip"],
         20,
         20,
@@ -69,7 +69,7 @@ starters = {
     "Charmander": Pokemon(
         "Charmander",
         ["Fire"],
-        80,
+        17,
         ["Scratch", "Tackle", "Ember"],
         25,
         15,
@@ -81,7 +81,7 @@ starters = {
     "Squirtle": Pokemon(
         "Squirtle",
         ["Water"],
-        120,
+        23,
         ["Scratch", "Tackle", "Bubble"],
         15,
         25,

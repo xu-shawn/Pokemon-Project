@@ -54,7 +54,7 @@ def simpleDmgMove(me, other, power=0, effective=[], noteffective=[]):
         uniform(0.85, 1) * effectiveness * (1 + (randint(0, 511) < me.speed))
     )
 
-    other.TakeDamage((2 * me.level / 5 + 2) * power * me.attack / me.defense)
+    other.TakeDamage(int((((2 * me.level / 5 + 2) * power * me.attack / other.defense) / 50 + 2) * modifier))
 
     # Add to UI
 
