@@ -8,6 +8,7 @@ def dramaticPause():
     Another name for "one second wait"
     """
     time.sleep(1)
+    MainUI.flush_input()
 
 
 class TextModifiers:  # Stores ANSI escape sequences that change the text but its actually readable
