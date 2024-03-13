@@ -76,6 +76,7 @@ class Pokemon:
         DOES NOT do the calculation, and DOES NOT check for faints.
         """
         self.health -= dmg
+        self.health = max(self.health, 0)
         MainUI.addMessage(f"{self.name} took {dmg} damage!")
 
     def __str__(self):
