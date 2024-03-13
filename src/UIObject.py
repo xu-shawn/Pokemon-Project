@@ -8,6 +8,7 @@ def dramaticPause():
     Another name for "one second wait"
     """
     time.sleep(1)
+    MainUI.flush_input()
 
 
 class TextModifiers:  # Stores ANSI escape sequences that change the text but its actually readable
@@ -41,21 +42,34 @@ TM = TextModifiers  # Alias
 
 
 class UI:
+    def flush_input(self):
+        try:
+            import msvcrt
+
+            while msvcrt.kbhit():
+                msvcrt.getch()
+        except ImportError:
+            import sys, termios  # for linux/unix
+
+            termios.tcflush(sys.stdin, termios.TCIOFLUSH)
+
     def __init__(self, p1, p2):
         self.ours = p1
         self.other = p2
         self.messages = []
+
     def addMessage(self, add):
         self.messages.append(add)
+
     def resetPokemon(self, p1, p2):
         self.ours = p1
         self.other = p2
 
     def ResetUI(self):
-        if os.name == 'nt':
+        if os.name == "nt":
             os.system("cls")
         else:
-            os.system('clear')
+            os.system("clear")
         print("Your pokemon:")
         print(str(self.ours))
         print("Their pokemon:")
@@ -65,5 +79,7 @@ class UI:
             print(x)
         self.messages = []
         dramaticPause()
+
+
 global MainUI
 MainUI = UI(None, None)
