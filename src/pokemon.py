@@ -1,5 +1,5 @@
-from random import uniform, randint
-from moves import *
+from moves import TM, MOVES_DICTIONARY
+from UIObject import MainUI
 
 
 def numberToBar(val, maxi, leng):
@@ -41,11 +41,13 @@ class Pokemon:
         self.defense = defense
         self.speed = speed
         self.experience = experience
+        # Temporary modifications made to stats by status effects
         self.statModifiers = (
             {}
-        )  # Temporary modifications made to stats by status effects, a dict of dicts
+        )
         self.description = description
-        self.statusEffects = statuseffects  # A list of functions to run every turn
+        # A list of functions to run every turn
+        self.statusEffects = statuseffects
 
     @property
     def level(self):
@@ -81,17 +83,20 @@ class Pokemon:
 
     def __str__(self):
         return (
-            f"{self.name} - {numberToBar(self.health, self.maxHealth, 20)} {self.health}/{self.maxHealth}{TM.END}"
+            f"{self.name} - {numberToBar(self.health, self.maxHealth, 20)}"
+            + f" {self.health}/{self.maxHealth}{TM.END}"
             + " ".join([str(x) for x in self.statusEffects])
         )
 
     def Heal(self, amt):
         """
         Heal(amt)
-        Heals the pokemon for the specified amount of health, up to a max of its maxHealth.
+        Heals the pokemon for the specified amount of health,
+        up to a max of its maxHealth.
         """
         self.health = max(self.health + amt, self.maxHealth)
-        MainUI.addMessage(f"{TM.GREEN}{self.name} heals for {amt} health!{TM.END}")
+        MainUI.addMessage(f"{TM.GREEN}{self.name}"
+                          + f"heals for {amt} health!{TM.END}")
 
     def TickStatusEffects(self):
         """

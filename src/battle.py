@@ -1,10 +1,5 @@
-from pokemon import *
-from pokedex import *  # Replace star imports later
-from moves import *
-from UIObject import *
+from UIObject import MainUI
 from random import choice
-import os
-import time
 
 
 def requestMove(player):
@@ -15,12 +10,15 @@ def requestMove(player):
         print(f"{moveIndex} - {move}")
         moveIndex += 1
     move = input("Your move: ")
-    moveList = [str(x) for x in range(0, moveIndex)]  # Hacky solution, clean up.
+    # Hacky solution, clean up.
+    moveList = [str(x) for x in range(0, moveIndex)]
     while move not in moveList:
         print("That's not a valid move. Please choose again.")
-        move = input(f"Your move (0 to {moveIndex - 1}): ")  # Maybe 1 index it?
+        # Maybe 1 index it?
+        move = input(f"Your move (0 to {moveIndex - 1}): ")
     selectedMove = moves[int(move)]
-    MainUI.addMessage(f"{player.name} used {selectedMove}")  # MainUI is a global obj.
+    # MainUI is a global obj.
+    MainUI.addMessage(f"{player.name} used {selectedMove}")
     return selectedMove
 
 

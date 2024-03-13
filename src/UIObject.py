@@ -10,8 +10,11 @@ def dramaticPause():
     time.sleep(3)
     MainUI.flush_input()
 
+# TextModifiers
+# Stores ANSI escape sequences that change the text's color and stuff
 
-class TextModifiers:  # Stores ANSI escape sequences that change the text but its actually readable
+
+class TextModifiers:
     BLACK = "\033[0;30m"
     RED = "\033[0;31m"
     GREEN = "\033[0;32m"
@@ -45,12 +48,11 @@ class UI:
     def flush_input(self):
         try:
             import msvcrt
-
             while msvcrt.kbhit():
                 msvcrt.getch()
         except ImportError:
-            import sys, termios  # for linux/unix
-
+            import sys
+            import termios  # for linux/unix
             termios.tcflush(sys.stdin, termios.TCIOFLUSH)
 
     def __init__(self, p1, p2):

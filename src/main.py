@@ -1,7 +1,9 @@
-from pokemon import *
+from pokemon import Pokemon
 import random
 from battle import battle
-from pokedex import *
+from pokedex import Pokedex
+import os
+import time
 
 
 def clearScrn():
@@ -19,7 +21,8 @@ def clearScrn():
 def display_welcome():
     print("Welcome to the Pokémon Adventure!")
     print(
-        "In this game, you will choose a starter Pokémon to battle against wild Pokémon."
+        """In this game, you will choose a starter
+         Pokémon to battle against wild Pokémon."""
     )
     print("You can capture Pokémon by defeating them in battles.")
     print("Let's start by choosing your first Pokémon!")
@@ -34,7 +37,8 @@ def choose_starter():
     choice = input("Your choice: ").capitalize()
     while choice not in starters:
         print(
-            "That's not a valid Pokémon. Please choose Bulbasaur, Charmander, or Squirtle."
+            """That's not a valid starter Pokémon.
+             Please choose Bulbasaur, Charmander, or Squirtle."""
         )
         choice = input("Your choice: ").capitalize()
 
@@ -73,7 +77,7 @@ starters = {
     "Bulbasaur": Pokemon(
         "Bulbasaur",
         ["Grass"],
-        20, # INFLATED HEALTH IS FOR TESTING
+        20,
         ["Scratch", "Tackle", "Vine Whip"],
         20,
         20,
@@ -86,7 +90,8 @@ starters = {
         "Charmander",
         ["Fire"],
         17,
-        ["Scratch", "Tackle", "Ember", "Spread Covid"], # Includs test move to test status effects
+        # Includes test move to test status effects
+        ["Scratch", "Tackle", "Ember", "Spread Covid"],
         25,
         15,
         20,
