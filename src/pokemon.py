@@ -108,7 +108,9 @@ class Pokemon:
         # Run every function in the Status Effects list on self
         # This should ensure that even if elements are removed
         # during iteration, all status effects are triggered.
-        self.statusEffects = [x for x in self.statusEffects if not x.Run(self)]
+        for status in self.statusEffects:
+            status.Run(self)
+        self.statusEffects = [x for x in self.statusEffects if not x.duration <= 0]
     def addStatus(self, status):
         """
         addStatus(status)
