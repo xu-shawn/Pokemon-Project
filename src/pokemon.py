@@ -80,8 +80,12 @@ class Pokemon:
         """
         self.health -= dmg
         MainUI.addMessage(f"{self.name} took {dmg} damage!")
+
     def __str__(self):
-        return f"{self.name} - {numberToBar(self.health, self.maxHealth, 20)} {self.health}/{self.maxHealth}{TM.END}" + ' '.join([str(x) for x in self.statusEffects])
+        return (
+            f"{self.name} - {numberToBar(self.health, self.maxHealth, 20)} {self.health}/{self.maxHealth}{TM.END}"
+            + " ".join([str(x) for x in self.statusEffects])
+        )
 
     def Heal(self, amt):
         """

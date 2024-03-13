@@ -43,14 +43,30 @@ def choose_starter():
 
 
 def display_battle_instructions():
-    MainUI.addMessage("Now that you have your Pokémon, you're ready to battle.")
-    MainUI.addMessage("During a battle, you can choose a move for your Pokémon to use.")
-    MainUI.addMessage("Each move has different effects, so choose wisely.")
-    MainUI.addMessage("Type the number associated with the move to choose it.")
+    print("Now that you have your Pokémon, you're ready to battle.")
+    print("During a battle, you can choose a move for your Pokémon to use.")
+    print("Each move has different effects, so choose wisely.")
+    print("Type the number associated with the move to choose it.")
 
 
-def choose_move(moves):  # Function retired, moved to battle.py
-    pass
+def explore_and_battle(player_pokedex):
+    wild_pokemon = random.choice(list(starters.values()))
+    print(f"\nA wild {wild_pokemon.name} appears!")
+    battle(player_pokedex.active_pokemon, wild_pokemon)
+
+
+def capture_attempt(player_pokedex, wild_pokemon):
+    # Simplified capture mechanic
+    print("Do you want to attempt to capture the wild Pokémon? (yes/no)")
+    choice = input().lower()
+    if choice == "yes":
+        if random.randint(0, 1):
+            print(f"{wild_pokemon.name} was successfully captured!")
+            player_pokedex.add_pokemon(wild_pokemon)
+        else:
+            print(f"The wild {wild_pokemon.name} escaped!")
+    else:
+        print("Continuing the adventure!")
 
 
 starters = {
@@ -93,18 +109,19 @@ starters = {
 }
 
 
-def main() -> None:
-    # Initialize Player Pokedex
-    playerPokedex = Pokedex()
+def main():
     display_welcome()
     starter_name = choose_starter()
     starterPokemon = starters[starter_name]
-    playerPokedex.add_pokemon(starterPokemon)
+    player_pokedex = Pokedex()
+    player_pokedex.add_pokemon(starterPokemon)
     del starters[starter_name]
     time.sleep(3)
     display_battle_instructions()
-    # First battle:
-    battle(playerPokedex.activePokemon, random.choice(list(starters.values())))
+
+    for _ in range(3):
+        explore_and_battle(player_pokedex)
+        capture_attempt(player_pokedex, player_pokedex.active_pokemon)
 
 
 if __name__ == "__main__":
