@@ -96,18 +96,18 @@ tier3 = {
         "Gyarados",
         ["Water", "Flying"],
         60,
-        ["Aqua Tail", "Crunch", "Hyper Beam"],
+        ["Aqua Jet", "Crunch", "Hyper Beam"],
         100,
         80,
         85,
         2744,
         "A fearsome sea serpent Pokémon with a vicious temper.",
     ),
-    "spoon guy":Pokemon(
+    "Alakazam":Pokemon(
         "Alakazam",
         ["Psychic"],
         55,
-        ["Psychic", "Future Sight", "Shadow Ball"],
+        ["Shadow Ball"],
         80,
         70,
         90,
@@ -174,7 +174,7 @@ def display_battle_instructions():
     print("During a battle, you can choose a move for your Pokémon to use.")
     print("Each move has different effects, so choose wisely.")
     print("Type the number associated with the move to choose it.")
-    time.sleep(3)
+    time.sleep(7)
 
 def explore_and_battle(player_pokedex):
     global currentEnemies, firstTimeAround, tier
